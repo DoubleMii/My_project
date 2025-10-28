@@ -17,6 +17,11 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] Vector2 groundCheckSize = new Vector2(0.5f, 0.05f); //Size of the box used to detect the ground.
     [SerializeField] LayerMask groundLayer; //Layer where the ground is.
 
+    [Header("ObjectChecker")]
+    [SerializeField] Transform objectCheckPos; //Position from where we check if the player is touching the object.
+    [SerializeField] Vector3 objectCheckSize = new Vector4(0.5f, 0.05f); //Size of the box used to detect the object.
+    [SerializeField] LayerMask objectLayer; //Layer where the object is.
+
     //AudioManager audiomanagerInstance; //Reference to the AudioManager script to play sounds.
 
     void Start()
@@ -60,5 +65,16 @@ public class PlayerMovement : MonoBehaviour
     {
         Gizmos.color = Color.red; //Color of the box.
         Gizmos.DrawWireCube(groundCheckPos.position, groundCheckSize); //Draw the box to visualize the grounded area.
+        Gizmos.DrawWireCube(objectCheckPos.position, objectCheckSize); //Draw the box to visualize the grounded area.
     }
+    public bool IsObject() //Function to check if the player is touching the object.
+    {
+        if (Physics2D.OverlapBox(objectCheckPos.position, objectCheckSize, 0, objectLayer)) //Make a box in the chracter to check position.
+        {
+            return true; //If the box touchs the object layer, return true.
+        }
+        return false; //If not, return false.
+    }
+
+   
 }

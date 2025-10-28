@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UIElements;
+using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class MagneticObjects : MonoBehaviour
 {
@@ -35,3 +36,4 @@ public class MagneticObjects : MonoBehaviour
     }
 
 }
+
