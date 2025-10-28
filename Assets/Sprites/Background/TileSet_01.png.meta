@@ -3896,8 +3896,8 @@ TextureImporter:
       name: TileSet_01_172
       rect:
         serializedVersion: 2
-        x: 32
-        y: 496
+        x: 34
+        y: 495
         width: 16
         height: 16
       alignment: 0
