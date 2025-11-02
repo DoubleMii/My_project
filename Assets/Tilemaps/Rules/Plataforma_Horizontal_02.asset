@@ -18,27 +18,21 @@ MonoBehaviour:
   m_MaskType: 1
   m_Random: 0
   m_AutoTileDictionary:
-    keyData: 30000000180000003800000008000000
+    keyData: 180000003800000030000000
     valueData:
-    - spriteList:
-      - {fileID: -956830209, guid: e4aa6d461aaba9348a934fcad45661b6, type: 3}
-      textureList:
-      - {fileID: 2800000, guid: e4aa6d461aaba9348a934fcad45661b6, type: 3}
     - spriteList:
       - {fileID: 29157860, guid: e4aa6d461aaba9348a934fcad45661b6, type: 3}
       textureList:
       - {fileID: 2800000, guid: e4aa6d461aaba9348a934fcad45661b6, type: 3}
     - spriteList:
       - {fileID: 1891544002, guid: e4aa6d461aaba9348a934fcad45661b6, type: 3}
-      - {fileID: -306917538, guid: e4aa6d461aaba9348a934fcad45661b6, type: 3}
       textureList:
       - {fileID: 2800000, guid: e4aa6d461aaba9348a934fcad45661b6, type: 3}
-      - {fileID: 2800000, guid: e4aa6d461aaba9348a934fcad45661b6, type: 3}
     - spriteList:
-      - {fileID: 515106876, guid: e4aa6d461aaba9348a934fcad45661b6, type: 3}
+      - {fileID: -956830209, guid: e4aa6d461aaba9348a934fcad45661b6, type: 3}
       textureList:
       - {fileID: 2800000, guid: e4aa6d461aaba9348a934fcad45661b6, type: 3}
   m_TextureList:
   - {fileID: 2800000, guid: e4aa6d461aaba9348a934fcad45661b6, type: 3}
   m_TextureScaleList:
-  - 2.5
+  - 1.79

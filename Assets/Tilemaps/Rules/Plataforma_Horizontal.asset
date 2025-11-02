@@ -21,7 +21,7 @@ MonoBehaviour:
     keyData: 36000000f8010000d80000003f0000001b000000b001000000000000
     valueData:
     - spriteList:
-      - {fileID: -548455426, guid: e4aa6d461aaba9348a934fcad45661b6, type: 3}
+      - {fileID: -1097481568, guid: e4aa6d461aaba9348a934fcad45661b6, type: 3}
       textureList:
       - {fileID: 2800000, guid: e4aa6d461aaba9348a934fcad45661b6, type: 3}
     - spriteList:
@@ -50,7 +50,9 @@ MonoBehaviour:
       - {fileID: 575000759, guid: e4aa6d461aaba9348a934fcad45661b6, type: 3}
       - {fileID: -1561334050, guid: e4aa6d461aaba9348a934fcad45661b6, type: 3}
       - {fileID: -2113440084, guid: e4aa6d461aaba9348a934fcad45661b6, type: 3}
+      - {fileID: -548455426, guid: e4aa6d461aaba9348a934fcad45661b6, type: 3}
       textureList:
+      - {fileID: 2800000, guid: e4aa6d461aaba9348a934fcad45661b6, type: 3}
       - {fileID: 2800000, guid: e4aa6d461aaba9348a934fcad45661b6, type: 3}
       - {fileID: 2800000, guid: e4aa6d461aaba9348a934fcad45661b6, type: 3}
       - {fileID: 2800000, guid: e4aa6d461aaba9348a934fcad45661b6, type: 3}
