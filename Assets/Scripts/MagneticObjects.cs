@@ -1,7 +1,5 @@
 using UnityEngine;
 using UnityEngine.UIElements;
-using static UnityEngine.RuleTile.TilingRuleOutput;
-
 public class MagneticObjects : MonoBehaviour
 {
     [SerializeField] float speed = 5.0f; //Speed of the magnetic object.
@@ -13,6 +11,10 @@ public class MagneticObjects : MonoBehaviour
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>(); //In Start, assign the Rigidbody of the magnetic object to a variable.
+        if (rb == null)
+        {
+            Debug.LogError("MagneticObjects necesita un Rigidbody2D!");
+        }
     }
 
     private void FixedUpdate()
@@ -20,7 +22,7 @@ public class MagneticObjects : MonoBehaviour
         if (hasTarget) //If the object have a target, it can be attracted by the player.
         {
             Vector2 targetDirection = (targetPosition - transform.position).normalized; //Create the target direction by subtracting positions and normalizing it.
-            rb.linearVelocity = new Vector2(targetDirection.x, targetDirection.y) * speed; //Multiply direction by speed to move the object.
+            rb.linearVelocity = targetDirection * speed; //Multiply direction by speed to move the object.
         }
     }
 
@@ -33,7 +35,6 @@ public class MagneticObjects : MonoBehaviour
     public void NoTarget() //Function to unset the target.
     {
         hasTarget = false; //Disable target.
+        rb.linearVelocity = Vector2.zero; //Reset the speed of the object.
     }
-
 }
-
