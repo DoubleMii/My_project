@@ -1130,7 +1130,7 @@ GameObject:
   - component: {fileID: 1285575679}
   m_Layer: 6
   m_Name: PlataformsMov
-  m_TagString: Untagged
+  m_TagString: MovingPlatform
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1515,6 +1515,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 502eb3f145bf7d9458261119e9b36ceb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  radius: 3
+  speed: 2
+  centerOffset: {x: 0, y: 0}
 --- !u!251 &1285575680
 PlatformEffector2D:
   m_ObjectHideFlags: 0
