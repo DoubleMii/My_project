@@ -96,4 +96,32 @@ public class PlayerMovement : MonoBehaviour
         Gizmos.DrawWireCube(groundCheckPos.position, groundCheckSize); //Draw the box to visualize the grounded area.
         Gizmos.DrawWireCube(objectCheckPos.position, objectCheckSize); //Draw the box to visualize the object detection area.
     }
+    private void OnCollisionEnter2D(Collision2D collision) //Function called when the player collides with something.
+
+    {
+
+        if (collision.gameObject.CompareTag("MovingPlatform")) //If the player lands on a moving platform.
+
+        {
+
+            transform.parent = collision.transform; //Make the player a child of the platform to move with it.
+
+        }
+
+    }
+
+    private void OnCollisionExit2D(Collision2D collision) //Function called when the player stops colliding with something.
+
+    {
+
+        if (collision.gameObject.CompareTag("MovingPlatform")) //If the player leaves the moving platform.
+
+        {
+
+            transform.parent = null; //Unparent the player from the platform.
+
+        }
+
+    }
+
 }
