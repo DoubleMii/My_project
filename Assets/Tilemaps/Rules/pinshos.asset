@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b08ceb78e3b2495b8d808a5860e66794, type: 3}
+  m_Name: pinshos
+  m_EditorClassIdentifier: Unity.2D.Tilemap.Extras::UnityEngine.Tilemaps.AutoTile
+  m_DefaultSprite: {fileID: -385158121, guid: e4aa6d461aaba9348a934fcad45661b6, type: 3}
+  m_DefaultGameObject: {fileID: 0}
+  m_DefaultColliderType: 1
+  m_MaskType: 1
+  m_Random: 0
+  m_AutoTileDictionary:
+    keyData: 00000000
+    valueData:
+    - spriteList:
+      - {fileID: 1518511778, guid: e4aa6d461aaba9348a934fcad45661b6, type: 3}
+      - {fileID: -385158121, guid: e4aa6d461aaba9348a934fcad45661b6, type: 3}
+      - {fileID: -1640554608, guid: e4aa6d461aaba9348a934fcad45661b6, type: 3}
+      - {fileID: -946555847, guid: e4aa6d461aaba9348a934fcad45661b6, type: 3}
+      - {fileID: 1711512614, guid: e4aa6d461aaba9348a934fcad45661b6, type: 3}
+      textureList:
+      - {fileID: 2800000, guid: e4aa6d461aaba9348a934fcad45661b6, type: 3}
+      - {fileID: 2800000, guid: e4aa6d461aaba9348a934fcad45661b6, type: 3}
+      - {fileID: 2800000, guid: e4aa6d461aaba9348a934fcad45661b6, type: 3}
+      - {fileID: 2800000, guid: e4aa6d461aaba9348a934fcad45661b6, type: 3}
+      - {fileID: 2800000, guid: e4aa6d461aaba9348a934fcad45661b6, type: 3}
+  m_TextureList:
+  - {fileID: 2800000, guid: e4aa6d461aaba9348a934fcad45661b6, type: 3}
+  - {fileID: 0}
+  m_TextureScaleList:
+  - 2.5
+  - 1
