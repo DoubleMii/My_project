@@ -80,22 +80,15 @@ public class PlayerMovement : MonoBehaviour
     {
         Collider2D hitObject = Physics2D.OverlapBox(objectCheckPos.position, objectCheckSize, 0, objectLayer); //Get the collider of the object touching the player.
  
-        if (hitObject != null) //If there is an object touching the player.
-        {
+
             MagneticObjects mag = hitObject.GetComponent<MagneticObjects>(); //Get the MagneticObjects script from the object.
             if (mag != null) //If the object has the MagneticObjects script.
             {
                 mag.NoTarget(); //Call NoTarget to stop the object's attraction and prevent player floating.
             }
-        }
     }
  
-    private void OnDrawGizmos() //Function to draw the ground check box and object check box in the editor.
-    {
-        Gizmos.color = Color.red; //Color of the box.
-        Gizmos.DrawWireCube(groundCheckPos.position, groundCheckSize); //Draw the box to visualize the grounded area.
-        Gizmos.DrawWireCube(objectCheckPos.position, objectCheckSize); //Draw the box to visualize the object detection area.
-    }
+    
     private void OnCollisionEnter2D(Collision2D collision) //Function called when the player collides with something.
 
     {
@@ -122,6 +115,12 @@ public class PlayerMovement : MonoBehaviour
 
         }
 
+    }
+    private void OnDrawGizmos() //Function to draw the ground check box and object check box in the editor.
+    {
+        Gizmos.color = Color.red; //Color of the box.
+        Gizmos.DrawWireCube(groundCheckPos.position, groundCheckSize); //Draw the box to visualize the grounded area.
+        Gizmos.DrawWireCube(objectCheckPos.position, objectCheckSize); //Draw the box to visualize the object detection area.
     }
 
 }
