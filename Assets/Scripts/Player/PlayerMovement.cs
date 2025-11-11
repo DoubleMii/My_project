@@ -7,7 +7,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Movement")]
     [SerializeField] private float playerSpeed = 2f; //Player speed variable.
     private Rigidbody2D playerRigidbody2d; //Rigidbody of the player to apply forces and movement.
-    private Vector2 playerDirection; //Direction the player moves.
+    public Vector2 playerDirection; //Direction the player moves.
  
     [Header("Jump")]
     [SerializeField] private float jumpForce = 5f; //Force used to jump.
@@ -121,6 +121,11 @@ public class PlayerMovement : MonoBehaviour
         Gizmos.color = Color.red; //Color of the box.
         Gizmos.DrawWireCube(groundCheckPos.position, groundCheckSize); //Draw the box to visualize the grounded area.
         Gizmos.DrawWireCube(objectCheckPos.position, objectCheckSize); //Draw the box to visualize the object detection area.
+    }
+
+    public Vector2  GetDirection()
+    {
+        return playerDirection;
     }
 
 }

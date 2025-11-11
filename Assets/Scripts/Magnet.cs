@@ -1,6 +1,12 @@
 using UnityEngine;
 public class Magnet : MonoBehaviour
 {
+    private PlayerMovement playerMovement;
+
+    void Start()
+    {
+        
+    }
     private void OnTriggerStay2D(Collider2D collision) //The OnTriggerStay function is exectued all the time the MagneticObject is inside the Magnet influence area.
     {
 
@@ -34,5 +40,10 @@ public class Magnet : MonoBehaviour
                 }
             }
         }
+    }
+
+    private void MoveMagnet ()
+    {
+        if (Player)
     }
 }
