@@ -34846,11 +34846,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 1285575675}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a584f9b83eaa394895e7bf2ba301238, type: 3}
+  m_Script: {fileID: 11500000, guid: 502eb3f145bf7d9458261119e9b36ceb, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: '::'
-  radius: 3
+  m_EditorClassIdentifier: Assembly-CSharp::MovingPlatform
+  movementType: 0
+  direction: {x: 0, y: 1}
+  distance: 3
   speed: 2
+  radius: 3
+  circularSpeed: 2
   centerOffset: {x: 0, y: 0}
 --- !u!1 &1455167889
 GameObject:

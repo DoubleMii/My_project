@@ -44,6 +44,6 @@ public class Magnet : MonoBehaviour
 
     private void MoveMagnet ()
     {
-        if (Player)
+        
     }
 }

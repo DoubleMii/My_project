@@ -6,6 +6,7 @@ TagManager:
   tags:
   - MagneticObjects
   - MovingPlatform
+  - Magnet
   layers:
   - Default
   - TransparentFX
