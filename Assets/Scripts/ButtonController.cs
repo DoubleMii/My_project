@@ -94,11 +94,12 @@ public class ButtonController : MonoBehaviour
 
     private void InvertGravity(Collider2D collision) //Function to invert player's gravity.
     {
-        Rigidbody2D playerRb = collision.GetComponent<Rigidbody2D>(); //Get player's Rigidbody2D.
+        Rigidbody2D playerRb = collision.GetComponent<Rigidbody2D>(); //Get player's Rigidbody2D. coger el scrip para poder invertir la gravedad
 
         if (playerRb != null)
         {
             playerRb.gravityScale *= -1; //Invert gravity by multiplying by -1.
+            //poner flip
         }
         else
         {
