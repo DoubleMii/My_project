@@ -21,23 +21,42 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] Transform objectCheckPos; //Position from where we check if the player is touching the object.
     [SerializeField] Vector3 objectCheckSize = new Vector4(0.5f, 0.05f); //Size of the box used to detect the object.
     [SerializeField] LayerMask objectLayer; //Layer where the object is.
- 
+
+    Animator animator;
+    private bool IsFacingRight = true;
+    private ParticleSystem walkParticles;
     //AudioManager audiomanagerInstance; //Reference to the AudioManager script to play sounds.
  
     void Start()
     {
         playerRigidbody2d = GetComponent<Rigidbody2D>(); //Get the Rigidbody2D component from the player.
         //audiomanagerInstance = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>(); //Get the AudioManager from the scene.
+        animator = GetComponent<Animator>();
+        walkParticles = GetComponentInChildren<ParticleSystem>();
     }
  
     void FixedUpdate()
     {
         playerRigidbody2d.linearVelocity = new Vector2(playerDirection.x * playerSpeed, playerRigidbody2d.linearVelocityY); //Move the player by changing his velocity in X.
- 
+        animator.SetFloat("xVel",Mathf.Abs(playerRigidbody2d.linearVelocityX)); //Animation of the player  
+
+        FlipSprite();
         
         if (IsObject()) //Check if a magnetic object is touching the player and stop its attraction to prevent floating.
         {
             StopMagneticObject(); //Stop the magnetic object from being attracted.
+        }
+
+
+    }
+    private void FlipSprite()
+    {
+        if(IsFacingRight && playerDirection.x < 0f || !IsFacingRight && playerDirection.x > 0f) 
+        {
+            IsFacingRight = !IsFacingRight;
+            Vector3 playerLocalScale = transform.localScale;
+            playerLocalScale.x *= -1f;
+            transform.localScale = playerLocalScale;
         }
     }
  
@@ -115,6 +134,11 @@ public class PlayerMovement : MonoBehaviour
 
         }
 
+    }
+
+    public void EmitWalkParticles()
+    {
+        walkParticles.Emit(1);
     }
     private void OnDrawGizmos() //Function to draw the ground check box and object check box in the editor.
     {
