@@ -2,31 +2,25 @@ using UnityEngine;
 
 public class ButtonController : MonoBehaviour
 {
-    /*[SerializeField] private GameObject door;
-
-    
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        door.GetComponent<CapsuleCollider2D>().enabled = true;
-        gameObject.SetActive(false);
-    }*/
-  
     [Header("Button Type")]
     [SerializeField] private ButtonType buttonType = ButtonType.OpenDoor; //Type of button action.
 
     [Header("Target Object")]
-    [SerializeField] private GameObject targetObject; //Object that will be affected by the button.
+    [SerializeField] private GameObject targetObject; //Object that will be affected by the button (not needed for InvertGravity).
 
     [Header("Settings")]
     [SerializeField] private bool deactivateButton = true; //Should the button deactivate after use?
     [SerializeField] private bool requirePlayer = true; //Does it require the player to activate?
+    [SerializeField] private bool isToggleable = false; //Can the button be toggled on/off? (useful for gravity inversion).
+
+    private bool isActivated = false; //Track if button is currently activated (for toggleable buttons).
 
     //Enum to define button types.
     public enum ButtonType
     {
         OpenDoor,      //Enables the door collider.
         OpenPillar,    //Deactivates pillars or obstacles.
-        InvertGravity  //Inverts the player's gravity.
+        InvertGravity  //Inverts the player's gravity with visual flip.
     }
 
     private void OnTriggerEnter2D(Collider2D collision) //Function called when something enters the button trigger.
@@ -35,6 +29,12 @@ public class ButtonController : MonoBehaviour
         if (requirePlayer && !collision.CompareTag("Player"))
         {
             return; //Exit if not the player.
+        }
+
+        //If button is toggleable and already activated, don't activate again.
+        if (isToggleable && isActivated)
+        {
+            return;
         }
 
         //Execute action based on button type.
@@ -49,14 +49,25 @@ public class ButtonController : MonoBehaviour
                 break;
 
             case ButtonType.InvertGravity:
-                InvertGravity(collision); //Invert player's gravity.
+                InvertGravity(collision); //Invert player's gravity with flip.
                 break;
         }
 
-        //Deactivate button if configured to do so.
-        if (deactivateButton)
+        isActivated = true; //Mark button as activated.
+
+        //Deactivate button if configured to do so and not toggleable.
+        if (deactivateButton && !isToggleable)
         {
             gameObject.SetActive(false); //Deactivate the button after use.
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision) //Function called when something exits the button trigger.
+    {
+        //If button is toggleable, allow reactivation when player leaves.
+        if (isToggleable && requirePlayer && collision.CompareTag("Player"))
+        {
+            isActivated = false; //Reset activation state.
         }
     }
 
@@ -92,19 +103,18 @@ public class ButtonController : MonoBehaviour
         }
     }
 
-    private void InvertGravity(Collider2D collision) //Function to invert player's gravity.
+    private void InvertGravity(Collider2D collision) //Function to invert player's gravity with visual flip.
     {
-        Rigidbody2D playerRb = collision.GetComponent<Rigidbody2D>(); //Get player's Rigidbody2D. coger el scrip para poder invertir la gravedad
+        PlayerMovement playerMovement = collision.GetComponent<PlayerMovement>(); //Get the PlayerMovement script.
 
-        if (playerRb != null)
+        if (playerMovement != null)
         {
-            playerRb.gravityScale *= -1; //Invert gravity by multiplying by -1.
-            //poner flip
+            playerMovement.ToggleGravity(); //Call the ToggleGravity function in PlayerMovement to invert gravity and flip sprite.
+            Debug.Log("Player gravity inverted!");
         }
         else
         {
-            Debug.LogWarning("Player doesn't have a Rigidbody2D component!");
+            Debug.LogWarning("Player doesn't have a PlayerMovement component!");
         }
     }
-
 }
