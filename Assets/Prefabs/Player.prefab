@@ -39,7 +39,6 @@ Transform:
   - {fileID: 7435766561269781804}
   - {fileID: 4062484871812916642}
   - {fileID: 2251717080029253007}
-  - {fileID: 8721176538178690865}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8207298194853092884
@@ -353,7 +352,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 8721176538178690865}
   m_Father: {fileID: 3235159572274291059}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &7479538528695065162
@@ -445,7 +445,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 3235159572274291059}
+  m_Father: {fileID: 7992686216167717025}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -17.853}
 --- !u!198 &8395782746844028050
 ParticleSystem:
