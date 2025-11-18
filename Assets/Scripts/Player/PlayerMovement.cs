@@ -37,7 +37,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Transform graphicsChild;
 
     Animator animator;
-    private bool IsFacingRight = true;
+    private bool IsFacingRight = false;
     private ParticleSystem walkParticles;
 
     void Start()
