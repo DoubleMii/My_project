@@ -10,11 +10,11 @@ GameObject:
   m_Component:
   - component: {fileID: 3235159572274291059}
   - component: {fileID: 8207298194853092884}
-  - component: {fileID: 5787049402625993118}
   - component: {fileID: 1519080127746175139}
   - component: {fileID: 6758218194768144343}
   - component: {fileID: 9073576495804853480}
   - component: {fileID: 5697827817128477724}
+  - component: {fileID: 7278253203591755904}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -171,23 +171,6 @@ MonoBehaviour:
   m_DefaultActionMap: 
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
---- !u!111 &5787049402625993118
-Animation:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1831907269510430937}
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Animation: {fileID: 0}
-  m_Animations:
-  - {fileID: 7400000, guid: b82e8fd300993b1408f7bf77c15f4094, type: 2}
-  m_WrapMode: 0
-  m_PlayAutomatically: 1
-  m_AnimatePhysics: 0
-  m_UpdateMode: 0
-  m_CullingType: 0
 --- !u!61 &1519080127746175139
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -311,8 +294,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerSpeed: 6
+  acceleration: 10
+  deceleration: 10
   playerDirection: {x: 0, y: 0}
   jumpForce: 7.5
+  jumpCutMultiplier: 0.5
+  fallMultiplier: 2.5
+  lowJumpMultiplier: 2
   groundCheckPos: {fileID: 7435766561269781804}
   groundCheckSize: {x: 3.21, y: 0.17}
   groundLayer:
@@ -323,6 +311,29 @@ MonoBehaviour:
   objectLayer:
     serializedVersion: 2
     m_Bits: 128
+  gravityScale: 1
+--- !u!95 &7278253203591755904
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1831907269510430937}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 20fbf18a339ac0e429b42ffcabee16e5, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &3786693183428222070
 GameObject:
   m_ObjectHideFlags: 0
@@ -5372,6 +5383,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 667cda69105a7194b87a27dbef004d4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  moveSpeed: 5
+  maxDistance: 5
 --- !u!1 &7899663122220860324
 GameObject:
   m_ObjectHideFlags: 0

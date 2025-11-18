@@ -62559,7 +62559,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09ad87fce55c6d34db328c0025b6223d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MagneticObjects
+  objectSize: 1
   speed: 5
+  mass: 1
 --- !u!1 &1959731983
 GameObject:
   m_ObjectHideFlags: 0
