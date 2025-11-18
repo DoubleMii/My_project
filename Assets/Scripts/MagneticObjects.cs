@@ -16,9 +16,9 @@ public class MagneticObjects : MonoBehaviour
     //Enum to define object sizes.
     public enum ObjectSize
     {
-        Small,   //Small objects: light and fast.
-        Medium,  //Medium objects: balanced.
-        Large    //Large objects: heavy and slow.
+        Small,  //Small objects: light and fast.
+        Medium, //Medium objects: balanced.
+        Large   //Large objects: heavy and slow.
     }
 
     private void Start()
@@ -28,7 +28,6 @@ public class MagneticObjects : MonoBehaviour
         {
             Debug.LogError("MagneticObjects needs a Rigidbody2D!");
         }
-
         ConfigureObjectBySize(); //Configure properties based on selected size.
     }
 
@@ -45,21 +44,16 @@ public class MagneticObjects : MonoBehaviour
         switch (objectSize)
         {
             case ObjectSize.Small:
-                speed = 10f; //Small objects move faster.
-                mass = 0.5f; //Small objects are lighter.
-                transform.localScale = new Vector3(2f, 2f, 1f); //Visual scale (half of medium).
+                speed = 10f; mass = 0.5f;
+                transform.localScale = new Vector3(2f, 2f, 1f);
                 break;
-
             case ObjectSize.Medium:
-                speed = 6f; //Medium objects have balanced speed.
-                mass = 1f; //Medium objects have normal mass.
-                transform.localScale = new Vector3(4f, 4f, 1f); //Visual scale (base size).
+                speed = 6f; mass = 1f;
+                transform.localScale = new Vector3(4f, 4f, 1f);
                 break;
-
             case ObjectSize.Large:
-                speed = 3f; //Large objects move slower.
-                mass = 2f; //Large objects are heavier.
-                transform.localScale = new Vector3(6f, 6f, 1f); //Visual scale (1.5x medium).
+                speed = 3f; mass = 2f;
+                transform.localScale = new Vector3(6f, 6f, 1f);
                 break;
         }
 
@@ -74,26 +68,21 @@ public class MagneticObjects : MonoBehaviour
     {
         if (hasTarget) //If the object has a target, it can be attracted by the player.
         {
-            Vector2 targetDirection = (targetPosition - transform.position).normalized; //Create the target direction by subtracting positions and normalizing it.
-
-            //Calculate force based on mass (heavier objects need more force).
-            float appliedSpeed = speed / Mathf.Sqrt(mass); //Adjust speed by square root of mass for better feel.
-
-            //Apply velocity towards target, overriding gravity temporarily.
+            Vector2 targetDirection = (targetPosition - transform.position).normalized;
+            float appliedSpeed = speed / Mathf.Sqrt(mass);
             rb.linearVelocity = targetDirection * appliedSpeed;
         }
-        //If no target, gravity will naturally pull it down (no need to reset velocity here).
     }
 
     public void SetTarget(Vector3 position) //Function to set the target.
     {
-        targetPosition = position; //Set target position.
-        hasTarget = true; //Enable target.
+        targetPosition = position;
+        hasTarget = true;
     }
 
     public void NoTarget() //Function to unset the target.
     {
-        hasTarget = false; //Disable target.
+        hasTarget = false;
         //Don't reset velocity to zero - let gravity take over immediately for natural fall.
     }
 

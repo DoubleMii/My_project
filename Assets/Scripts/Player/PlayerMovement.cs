@@ -7,6 +7,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float playerSpeed = 2f; //Player speed variable.
     [SerializeField] private float acceleration = 10f; //How fast the player accelerates.
     [SerializeField] private float deceleration = 10f; //How fast the player decelerates.
+
     private Rigidbody2D playerRigidbody2d; //Rigidbody of the player to apply forces and movement.
     public Vector2 playerDirection; //Direction the player moves.
     private float currentSpeed; //Current movement speed for smooth acceleration.
@@ -25,7 +26,7 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("ObjectChecker")]
     [SerializeField] Transform objectCheckPos; //Position from where we check if the player is touching the object.
-    [SerializeField] Vector3 objectCheckSize = new Vector4(0.5f, 0.05f); //Size of the box used to detect the object.
+    [SerializeField] Vector2 objectCheckSize = new Vector2(0.5f, 0.05f); //Size of the box used to detect the object.
     [SerializeField] LayerMask objectLayer; //Layer where the object is.
 
     [Header("Gravity Inversion")]
@@ -33,56 +34,51 @@ public class PlayerMovement : MonoBehaviour
     private bool isGravityInverted = false; //Check if gravity is currently inverted.
     private int gravityDirection = 1; //1 = normal, -1 = inverted.
 
+    [SerializeField] private Transform graphicsChild;
+
     Animator animator;
     private bool IsFacingRight = true;
     private ParticleSystem walkParticles;
 
     void Start()
     {
-        playerRigidbody2d = GetComponent<Rigidbody2D>(); //Get the Rigidbody2D component from the player.
-        animator = GetComponent<Animator>();
+        playerRigidbody2d = GetComponent<Rigidbody2D>();
+        animator = GetComponentInChildren<Animator>();
         walkParticles = GetComponentInChildren<ParticleSystem>();
-        playerRigidbody2d.gravityScale = gravityScale; //Set initial gravity.
+        playerRigidbody2d.gravityScale = gravityScale;
     }
 
     void Update()
     {
         //Better jump physics for more responsive feel.
-        if (playerRigidbody2d.linearVelocityY < 0) //If falling.
+        if (playerRigidbody2d.linearVelocity.y * gravityDirection < 0)
         {
-            playerRigidbody2d.gravityScale = gravityScale * fallMultiplier * gravityDirection; //Apply fall multiplier.
+            playerRigidbody2d.gravityScale = gravityScale * fallMultiplier * gravityDirection;
         }
-        else if (playerRigidbody2d.linearVelocityY > 0 && !isJumping) //If moving up but not holding jump.
+        else if (playerRigidbody2d.linearVelocity.y * gravityDirection > 0 && !isJumping)
         {
-            playerRigidbody2d.gravityScale = gravityScale * lowJumpMultiplier * gravityDirection; //Apply low jump multiplier.
+            playerRigidbody2d.gravityScale = gravityScale * lowJumpMultiplier * gravityDirection;
         }
         else
         {
-            playerRigidbody2d.gravityScale = gravityScale * gravityDirection; //Normal gravity.
+            playerRigidbody2d.gravityScale = gravityScale * gravityDirection;
         }
     }
 
     void FixedUpdate()
     {
-        
-        float targetSpeed = playerDirection.x * playerSpeed; //Smooth acceleration and deceleration for better feel.
-        if (Mathf.Abs(targetSpeed) > 0.01f)
-        {
-            currentSpeed = Mathf.MoveTowards(currentSpeed, targetSpeed, acceleration * Time.fixedDeltaTime);
-        }
-        else
-        {
-            currentSpeed = Mathf.MoveTowards(currentSpeed, 0, deceleration * Time.fixedDeltaTime);
-        }
+        float targetSpeed = playerDirection.x * playerSpeed;
+        currentSpeed = Mathf.MoveTowards(currentSpeed,
+            targetSpeed,
+            (Mathf.Abs(targetSpeed) > 0.01f ? acceleration : deceleration) * Time.fixedDeltaTime);
 
-        playerRigidbody2d.linearVelocity = new Vector2(currentSpeed, playerRigidbody2d.linearVelocityY); //Move the player.
-        animator.SetFloat("xVel", Mathf.Abs(playerRigidbody2d.linearVelocityX)); //Animation of the player.
+        playerRigidbody2d.linearVelocity = new Vector2(currentSpeed, playerRigidbody2d.linearVelocity.y);
+
+        animator.SetFloat("xVel", Mathf.Abs(playerRigidbody2d.linearVelocity.x));
         FlipSprite();
 
-        if (IsObject()) //Check if a magnetic object is touching the player.
-        {
-            StopMagneticObject(); //Stop the magnetic object from being attracted.
-        }
+        if (IsObject())
+            StopMagneticObject();
     }
 
     private void FlipSprite()
@@ -90,112 +86,73 @@ public class PlayerMovement : MonoBehaviour
         if (IsFacingRight && playerDirection.x < 0f || !IsFacingRight && playerDirection.x > 0f)
         {
             IsFacingRight = !IsFacingRight;
-            Vector3 playerLocalScale = transform.localScale;
-            playerLocalScale.x *= -1f;
-            transform.localScale = playerLocalScale;
+            Vector3 scale = graphicsChild.localScale;
+            scale.x *= -1f;
+            graphicsChild.localScale = scale;
         }
     }
 
-    public void Move(InputAction.CallbackContext context) //Function to move the player when the movement input is detected.
+    public void Move(InputAction.CallbackContext context)
     {
-        playerDirection = context.ReadValue<Vector2>(); //Read the input value and store it in the direction variable.
+        playerDirection = context.ReadValue<Vector2>();
     }
 
-    public void Jump(InputAction.CallbackContext context) //Function to make the player jump.
+    public void Jump(InputAction.CallbackContext context)
     {
-        if (context.performed && IsGrounded()) //Check if the jump button is pressed and player is grounded.
+        if (context.performed && IsGrounded())
         {
-            float jumpDirection = isGravityInverted ? -1f : 1f; //Adjust jump direction based on gravity.
-            playerRigidbody2d.linearVelocity = new Vector2(playerRigidbody2d.linearVelocityX, jumpForce * jumpDirection); //Apply the jump force.
+            float jumpDirection = isGravityInverted ? -1f : 1f;
+            playerRigidbody2d.linearVelocity = new Vector2(playerRigidbody2d.linearVelocity.x, jumpForce * jumpDirection);
             isJumping = true;
         }
 
-        if (context.canceled) //If jump button is released early.
+        if (context.canceled)
         {
             isJumping = false;
-            if ((isGravityInverted && playerRigidbody2d.linearVelocityY < 0) ||
-                (!isGravityInverted && playerRigidbody2d.linearVelocityY > 0)) //If moving in jump direction.
+            if ((isGravityInverted && playerRigidbody2d.linearVelocity.y < 0) ||
+                (!isGravityInverted && playerRigidbody2d.linearVelocity.y > 0))
             {
-                playerRigidbody2d.linearVelocity = new Vector2(playerRigidbody2d.linearVelocityX, playerRigidbody2d.linearVelocityY * jumpCutMultiplier); //Cut jump short.
+                playerRigidbody2d.linearVelocity = new Vector2(playerRigidbody2d.linearVelocity.x,
+                    playerRigidbody2d.linearVelocity.y * jumpCutMultiplier);
             }
         }
     }
 
-    public bool IsGrounded() //Function to check if the player is touching the ground.
+    public bool IsGrounded()
     {
-        if (Physics2D.OverlapBox(groundCheckPos.position, groundCheckSize, 0, groundLayer)) //Make a box in the ground check position.
-        {
-            isJumping = false; //Reset jumping flag when grounded.
-            return true; //If the box touches the ground layer, return true.
-        }
-        return false; //If not, return false.
+        bool grounded = Physics2D.OverlapBox(groundCheckPos.position, groundCheckSize, 0, groundLayer);
+        if (grounded) isJumping = false;
+        return grounded;
     }
 
-    public bool IsObject() //Function to check if the player is touching a magnetic object.
+    public bool IsObject()
     {
-        if (Physics2D.OverlapBox(objectCheckPos.position, objectCheckSize, 0, objectLayer)) //Make a box in the character to check position.
-        {
-            return true; //If the box touches the object layer, return true.
-        }
-        return false; //If not, return false.
+        return Physics2D.OverlapBox(objectCheckPos.position, objectCheckSize, 0, objectLayer);
     }
 
-    private void StopMagneticObject() //Function to stop the magnetic object that is touching the player.
+    private void StopMagneticObject()
     {
-        Collider2D hitObject = Physics2D.OverlapBox(objectCheckPos.position, objectCheckSize, 0, objectLayer); //Get the collider of the object touching the player.
-        MagneticObjects mag = hitObject.GetComponent<MagneticObjects>(); //Get the MagneticObjects script from the object.
-        if (mag != null) //If the object has the MagneticObjects script.
-        {
-            mag.NoTarget(); //Call NoTarget to stop the object's attraction and prevent player floating.
-        }
+        Collider2D col = Physics2D.OverlapBox(objectCheckPos.position, objectCheckSize, 0, objectLayer);
+        col?.GetComponent<MagneticObjects>()?.NoTarget();
     }
-
-    public void ToggleGravity() //Function to toggle gravity inversion.
+    public void ToggleGravity()
     {
         isGravityInverted = !isGravityInverted;
-        gravityDirection *= -1; //Flip gravity direction.
+        gravityDirection *= -1;
 
-        //Flip the player sprite vertically.
-        Vector3 playerScale = transform.localScale;
-        playerScale.y *= -1f;
-        transform.localScale = playerScale;
+        transform.rotation = Quaternion.Euler(0, 0, isGravityInverted ? 180f : 0f);
 
-        //Flip ground check position.
-        Vector3 groundCheckLocalPos = groundCheckPos.localPosition;
-        groundCheckLocalPos.y *= -1f;
-        groundCheckPos.localPosition = groundCheckLocalPos;
+        if (graphicsChild != null)
+            graphicsChild.rotation = Quaternion.Euler(0, 0, isGravityInverted ? 180f : 0f);
     }
 
-    private void OnCollisionEnter2D(Collision2D collision) //Function called when the player collides with something.
-    {
-        if (collision.gameObject.CompareTag("MovingPlatform")) //If the player lands on a moving platform.
-        {
-            transform.parent = collision.transform; //Make the player a child of the platform to move with it.
-        }
-    }
+    private void OnCollisionEnter2D(Collision2D c) { if (c.gameObject.CompareTag("MovingPlatform")) transform.parent = c.transform; }
+    private void OnCollisionExit2D(Collision2D c) { if (c.gameObject.CompareTag("MovingPlatform")) transform.parent = null; }
 
-    private void OnCollisionExit2D(Collision2D collision) //Function called when the player stops colliding with something.
+    private void OnDrawGizmos()
     {
-        if (collision.gameObject.CompareTag("MovingPlatform")) //If the player leaves the moving platform.
-        {
-            transform.parent = null; //Unparent the player from the platform.
-        }
-    }
-
-    public void EmitWalkParticles()
-    {
-        walkParticles.Emit(1);
-    }
-
-    private void OnDrawGizmos() //Function to draw the ground check box and object check box in the editor.
-    {
-        Gizmos.color = Color.red; //Color of the box.
-        Gizmos.DrawWireCube(groundCheckPos.position, groundCheckSize); //Draw the box to visualize the grounded area.
-        Gizmos.DrawWireCube(objectCheckPos.position, objectCheckSize); //Draw the box to visualize the object detection area.
-    }
-
-    public Vector2 GetDirection()
-    {
-        return playerDirection;
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireCube(groundCheckPos.position, groundCheckSize);
+        Gizmos.DrawWireCube(objectCheckPos.position, objectCheckSize);
     }
 }
