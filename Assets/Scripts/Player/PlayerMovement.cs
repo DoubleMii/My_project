@@ -64,8 +64,8 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        //Smooth acceleration and deceleration for better feel.
-        float targetSpeed = playerDirection.x * playerSpeed;
+        
+        float targetSpeed = playerDirection.x * playerSpeed; //Smooth acceleration and deceleration for better feel.
         if (Mathf.Abs(targetSpeed) > 0.01f)
         {
             currentSpeed = Mathf.MoveTowards(currentSpeed, targetSpeed, acceleration * Time.fixedDeltaTime);
