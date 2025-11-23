@@ -78907,7 +78907,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09ad87fce55c6d34db328c0025b6223d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MagneticObjects
+  objectSize: 1
   speed: 5
+  mass: 1
 --- !u!1 &1959731983
 GameObject:
   m_ObjectHideFlags: 0
@@ -79549,11 +79551,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3235159572274291059, guid: 93a1e2c0d9dba2241ab4e63659abef8c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -12
+      value: -12.32
       objectReference: {fileID: 0}
     - target: {fileID: 3235159572274291059, guid: 93a1e2c0d9dba2241ab4e63659abef8c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.64
       objectReference: {fileID: 0}
     - target: {fileID: 3235159572274291059, guid: 93a1e2c0d9dba2241ab4e63659abef8c, type: 3}
       propertyPath: m_LocalPosition.z
