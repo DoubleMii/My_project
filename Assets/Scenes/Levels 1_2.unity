@@ -45060,7 +45060,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8745383676212541224, guid: 76d73b095e6385143825c4e2818410da, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -12.48
+      value: -12.73
       objectReference: {fileID: 0}
     - target: {fileID: 8745383676212541224, guid: 76d73b095e6385143825c4e2818410da, type: 3}
       propertyPath: m_LocalPosition.z
@@ -45453,9 +45453,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a584f9b83eaa394895e7bf2ba301238, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  radius: 3
-  speed: 2
-  centerOffset: {x: 0, y: 0}
 --- !u!1 &1455167889
 GameObject:
   m_ObjectHideFlags: 0
@@ -78831,7 +78828,7 @@ Transform:
   m_GameObject: {fileID: 1869006235}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 10.28, y: -0.2, z: 0.015208183}
+  m_LocalPosition: {x: 15.62, y: -1.46, z: 0.015208183}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -79614,6 +79611,14 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 0.6953268
       objectReference: {fileID: 0}
+    - target: {fileID: 6411030543984728998, guid: 965cf816d1ab86c4dbd9bacba76f3ce8, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 15.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6411030543984728998, guid: 965cf816d1ab86c4dbd9bacba76f3ce8, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.33
+      objectReference: {fileID: 0}
     - target: {fileID: 7084844601041216002, guid: 965cf816d1ab86c4dbd9bacba76f3ce8, type: 3}
       propertyPath: m_Name
       value: MagneticObject
@@ -79632,7 +79637,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8501475513868659389, guid: 965cf816d1ab86c4dbd9bacba76f3ce8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 7.1
+      value: -60.3
       objectReference: {fileID: 0}
     - target: {fileID: 8501475513868659389, guid: 965cf816d1ab86c4dbd9bacba76f3ce8, type: 3}
       propertyPath: m_LocalPosition.y
@@ -79676,7 +79681,7 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 8501475513868659389, guid: 965cf816d1ab86c4dbd9bacba76f3ce8, type: 3}
-      insertIndex: -1
+      insertIndex: 0
       addedObject: {fileID: 1869006236}
     - targetCorrespondingSourceObject: {fileID: 8501475513868659389, guid: 965cf816d1ab86c4dbd9bacba76f3ce8, type: 3}
       insertIndex: -1

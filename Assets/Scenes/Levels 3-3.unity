@@ -44338,7 +44338,7 @@ Tilemap:
     second:
       serializedVersion: 2
       m_TileIndex: 2
-      m_TileSpriteIndex: 6
+      m_TileSpriteIndex: 9
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
@@ -44497,14 +44497,14 @@ Tilemap:
     m_Data: {fileID: 0}
   - m_RefCount: 0
     m_Data: {fileID: 0}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
   - m_RefCount: 1
     m_Data: {fileID: 2032029213, guid: e4aa6d461aaba9348a934fcad45661b6, type: 3}
-  - m_RefCount: 0
-    m_Data: {fileID: 0}
-  - m_RefCount: 0
-    m_Data: {fileID: 0}
-  - m_RefCount: 0
-    m_Data: {fileID: 0}
   - m_RefCount: 1
     m_Data: {fileID: -98026969, guid: e4aa6d461aaba9348a934fcad45661b6, type: 3}
   - m_RefCount: 1
@@ -44676,6 +44676,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: button_Door
       objectReference: {fileID: 0}
+    - target: {fileID: 5674771070715198837, guid: 76d73b095e6385143825c4e2818410da, type: 3}
+      propertyPath: targetObject
+      value: 
+      objectReference: {fileID: 1598599000}
     - target: {fileID: 8745383676212541224, guid: 76d73b095e6385143825c4e2818410da, type: 3}
       propertyPath: m_LocalScale.y
       value: 0.34067717

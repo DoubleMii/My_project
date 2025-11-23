@@ -172,7 +172,7 @@ MonoBehaviour:
   movementType: 0
   direction: {x: 1, y: 0}
   distance: 20
-  speed: 10
+  speed: 8
   radius: 3
   circularSpeed: 2
   centerOffset: {x: 0, y: 0}
@@ -44643,7 +44643,7 @@ MonoBehaviour:
   movementType: 0
   direction: {x: -1, y: 0}
   distance: 20
-  speed: 10
+  speed: 8
   radius: 3
   circularSpeed: 2
   centerOffset: {x: 0, y: 0}
@@ -64308,6 +64308,10 @@ PrefabInstance:
     - target: {fileID: 3235159572274291059, guid: 93a1e2c0d9dba2241ab4e63659abef8c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5697827817128477724, guid: 93a1e2c0d9dba2241ab4e63659abef8c, type: 3}
+      propertyPath: playerSpeed
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
