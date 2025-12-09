@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -34,15 +35,14 @@ public class PlayerMovement : MonoBehaviour
     private int gravityDirection = 1;
     [SerializeField] private Transform graphicsChild;
 
-    [Header("Sound")]
-    
+    [Header("Combat")]
+    [SerializeField] private float bounceForceMultiplier = 0.6f;
 
+    [Header("Sound")]
     [Header("Animation")]
     [SerializeField] Animator animator;
     private bool IsFacingRight = false;
     private ParticleSystem walkParticles;
-
-   
 
     void Start()
     {
@@ -54,7 +54,6 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-       
         if (playerRigidbody2d.linearVelocity.y * gravityDirection < 0)
         {
             playerRigidbody2d.gravityScale = gravityScale * fallMultiplier * gravityDirection;
@@ -72,11 +71,8 @@ public class PlayerMovement : MonoBehaviour
     void FixedUpdate()
     {
         float targetSpeed = playerDirection.x * playerSpeed;
-        currentSpeed = Mathf.MoveTowards(currentSpeed, targetSpeed,
-            (Mathf.Abs(targetSpeed) > 0.01f ? acceleration : deceleration) * Time.fixedDeltaTime);
-
+        currentSpeed = Mathf.MoveTowards(currentSpeed, targetSpeed, (Mathf.Abs(targetSpeed) > 0.01f ? acceleration : deceleration) * Time.fixedDeltaTime);
         playerRigidbody2d.linearVelocity = new Vector2(currentSpeed, playerRigidbody2d.linearVelocity.y);
-
         animator.SetFloat("xVel", Mathf.Abs(playerRigidbody2d.linearVelocity.x));
         FlipSprite();
 
@@ -96,7 +92,6 @@ public class PlayerMovement : MonoBehaviour
     }
 
     // ========== INPUT SYSTEM METHODS ==========
-
     public void Move(InputAction.CallbackContext context)
     {
         playerDirection = context.ReadValue<Vector2>();
@@ -115,17 +110,14 @@ public class PlayerMovement : MonoBehaviour
         if (context.canceled)
         {
             isJumping = false;
-            if ((isGravityInverted && playerRigidbody2d.linearVelocity.y < 0) ||
-                (!isGravityInverted && playerRigidbody2d.linearVelocity.y > 0))
+            if ((isGravityInverted && playerRigidbody2d.linearVelocity.y < 0) || (!isGravityInverted && playerRigidbody2d.linearVelocity.y > 0))
             {
-                playerRigidbody2d.linearVelocity = new Vector2(playerRigidbody2d.linearVelocity.x,
-                    playerRigidbody2d.linearVelocity.y * jumpCutMultiplier);
+                playerRigidbody2d.linearVelocity = new Vector2(playerRigidbody2d.linearVelocity.x, playerRigidbody2d.linearVelocity.y * jumpCutMultiplier);
             }
         }
     }
 
     // ========== GROUND & OBJECT CHECKS ==========
-
     public bool IsGrounded()
     {
         bool grounded = Physics2D.OverlapBox(groundCheckPos.position, groundCheckSize, 0, groundLayer);
@@ -146,19 +138,69 @@ public class PlayerMovement : MonoBehaviour
     }
 
     // ========== GRAVITY INVERSION ==========
-
     public void ToggleGravity()
     {
         isGravityInverted = !isGravityInverted;
         gravityDirection *= -1;
         transform.rotation = Quaternion.Euler(0, 0, isGravityInverted ? 180f : 0f);
-
         if (graphicsChild != null)
             graphicsChild.rotation = Quaternion.Euler(0, 0, isGravityInverted ? 180f : 0f);
     }
 
-    // ========== PLATFORM HANDLING ==========
+    // ========== COLLISION HANDLING ==========
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Enemy") || collision.CompareTag("Bullet"))
+        {
+            // Si es una bala, verificar si ha sido repelida
+            Bullet bulletScript = collision.GetComponent<Bullet>();
+            bool isSafeBullet = bulletScript != null && bulletScript.HasBeenRepelled();
 
+            // Si la bala ha sido repelida, no hace daño al jugador
+            if (isSafeBullet)
+            {
+                return; // La bala repelida no daña al jugador
+            }
+
+            // Calculamos si el jugador está encima del enemigo/bala
+            float playerBottom = transform.position.y - GetComponent<Collider2D>().bounds.extents.y;
+            float enemyTop = collision.transform.position.y + collision.bounds.extents.y;
+
+            // Si el jugador está cayendo y viene desde arriba
+            bool isComingFromAbove = playerBottom > enemyTop && playerRigidbody2d.linearVelocity.y * gravityDirection < 0;
+
+            if (isComingFromAbove)
+            {
+                // Eliminar enemigo/bala
+                Destroy(collision.gameObject);
+
+                // Hacer que el jugador rebote
+                float bounceForce = jumpForce * bounceForceMultiplier * (isGravityInverted ? -1f : 1f);
+                playerRigidbody2d.linearVelocity = new Vector2(playerRigidbody2d.linearVelocity.x, bounceForce);
+
+                //AudioManager.instance.PlayerSound(enemyDeathSound);
+            }
+            else
+            {
+                // El jugador muere
+                MorirJugador();
+            }
+        }
+    }
+
+
+    private void MorirJugador()
+    {
+        Debug.Log("Player ha muerto! Reiniciando nivel...");
+
+        //Reproducir animación o sonido de muerte antes de reiniciar
+        // AudioManager.instance.PlayerSound(deathSound);
+
+        // Reiniciar el nivel actual
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    // ========== PLATFORM HANDLING ==========
     private void OnCollisionEnter2D(Collision2D c)
     {
         if (c.gameObject.CompareTag("MovingPlatform"))
@@ -172,7 +214,6 @@ public class PlayerMovement : MonoBehaviour
     }
 
     // ========== GIZMOS ==========
-
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
@@ -180,3 +221,4 @@ public class PlayerMovement : MonoBehaviour
         Gizmos.DrawWireCube(objectCheckPos.position, objectCheckSize);
     }
 }
+ 

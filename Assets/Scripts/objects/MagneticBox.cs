@@ -17,11 +17,11 @@ public class MagneticObjects : MonoBehaviour
     // Enum con 5 tamaños diferentes
     public enum ObjectSize
     {
-        Tiny,      // Muy pequeño
-        Small,     // Pequeño
-        Medium,    // Mediano
-        Large,     // Grande
-        Huge       // Enorme
+        Tiny,    // Muy pequeño
+        Small,   // Pequeño
+        Medium,  // Mediano
+        Large,   // Grande
+        Huge     // Enorme
     }
 
     private void Start()
@@ -59,25 +59,21 @@ public class MagneticObjects : MonoBehaviour
                 mass = 0.3f;
                 transform.localScale = new Vector3(1f, 1f, 1f);
                 break;
-
             case ObjectSize.Small:
                 speed = 10f;
                 mass = 0.5f;
                 transform.localScale = new Vector3(2f, 2f, 1f);
                 break;
-
             case ObjectSize.Medium:
                 speed = 6f;
                 mass = 1f;
                 transform.localScale = new Vector3(4f, 4f, 1f);
                 break;
-
             case ObjectSize.Large:
                 speed = 3f;
                 mass = 2f;
                 transform.localScale = new Vector3(6f, 6f, 1f);
                 break;
-
             case ObjectSize.Huge:
                 speed = 1.5f;
                 mass = 4f;
@@ -122,5 +118,11 @@ public class MagneticObjects : MonoBehaviour
     public ObjectSize GetSize()
     {
         return objectSize;
+    }
+
+    // ? NUEVO MÉTODO AGREGADO
+    public bool IsBeingControlled()
+    {
+        return hasTarget;
     }
 }

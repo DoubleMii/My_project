@@ -8,6 +8,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 158012954890865056, guid: 93a1e2c0d9dba2241ab4e63659abef8c, type: 3}
+      propertyPath: detectionRadius
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 1831907269510430937, guid: 93a1e2c0d9dba2241ab4e63659abef8c, type: 3}
       propertyPath: m_Name
       value: Player_coregido Variant
@@ -52,7 +56,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 7034059113244768138, guid: 93a1e2c0d9dba2241ab4e63659abef8c, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 515343207629622115, guid: 93a1e2c0d9dba2241ab4e63659abef8c, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

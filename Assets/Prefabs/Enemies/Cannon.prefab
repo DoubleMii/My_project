@@ -127,8 +127,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   balaPrefabs:
-  - {fileID: 6657658825882408731, guid: f09ef801752cf6046bed5c3a9536973a, type: 3}
-  - {fileID: 7252458616638833596, guid: 5f7d3902fc036614481308d9e2fa83ca, type: 3}
+  - {fileID: 3219832491806256926, guid: e0f29bef0b24b7f4ea0a217da9678e4d, type: 3}
+  - {fileID: 3219832491806256926, guid: cb376d6c71ec62348a1052459cecae38, type: 3}
   puntoDisparo: {fileID: 9212627784139152016}
   cadencia: 1
   shotLeft: 1
