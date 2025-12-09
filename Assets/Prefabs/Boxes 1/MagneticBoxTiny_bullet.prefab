@@ -13,8 +13,9 @@ GameObject:
   - component: {fileID: 4470652664379342887}
   - component: {fileID: 1995732501160796743}
   - component: {fileID: 2814781483861630245}
+  - component: {fileID: -7958255912129896971}
   m_Layer: 9
-  m_Name: MagneticBoxHuge
+  m_Name: MagneticBoxTiny_bullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -30,7 +31,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 44.10963, y: 10.21947, z: 0}
-  m_LocalScale: {x: 4, y: 4, z: 4}
+  m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -83,7 +84,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0.24278402, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -178,6 +179,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5823669081f2b4d49a6d20d0511cdd11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  objectSize: 4
+  objectSize: 0
   speed: 5
   mass: 1
+--- !u!114 &-7958255912129896971
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3219832491806256926}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c84e6dca6abdc849a01fceb820543d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Bullet
+  velocidad: 10
+  tiempoMaximo: 5
+  Damage: 0
+  KnockbackF: 0
+  StunDuration: 0
+  Direccion: {x: -1, y: 0, z: 0}
