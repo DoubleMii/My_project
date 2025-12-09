@@ -324,6 +324,7 @@ MonoBehaviour:
     m_Bits: 128
   gravityScale: 1
   graphicsChild: {fileID: 7992686216167717025}
+  bounceForceMultiplier: 0.6
   animator: {fileID: 0}
 --- !u!95 &7278253203591755904
 Animator:

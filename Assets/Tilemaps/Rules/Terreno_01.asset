@@ -1,0 +1,82 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b08ceb78e3b2495b8d808a5860e66794, type: 3}
+  m_Name: Terreno_01
+  m_EditorClassIdentifier: Unity.2D.Tilemap.Extras::UnityEngine.Tilemaps.AutoTile
+  m_DefaultSprite: {fileID: -9054841733071266653, guid: 214001d99e9226b46ba99f6978e278db, type: 3}
+  m_DefaultGameObject: {fileID: 0}
+  m_DefaultColliderType: 1
+  m_MaskType: 1
+  m_Random: 0
+  m_AutoTileDictionary:
+    keyData: 3f000000ff010000fb01000000000000bf010000f8010000d8000000b60100001b000000b0010000fe010000db00000036000000ff000000
+    valueData:
+    - spriteList:
+      - {fileID: 201156407948530534, guid: 214001d99e9226b46ba99f6978e278db, type: 3}
+      textureList:
+      - {fileID: 2800000, guid: 214001d99e9226b46ba99f6978e278db, type: 3}
+    - spriteList:
+      - {fileID: -1504904494, guid: 214001d99e9226b46ba99f6978e278db, type: 3}
+      textureList:
+      - {fileID: 2800000, guid: 214001d99e9226b46ba99f6978e278db, type: 3}
+    - spriteList:
+      - {fileID: -312949787, guid: 214001d99e9226b46ba99f6978e278db, type: 3}
+      textureList:
+      - {fileID: 2800000, guid: 214001d99e9226b46ba99f6978e278db, type: 3}
+    - spriteList:
+      - {fileID: 7863271201070063246, guid: 214001d99e9226b46ba99f6978e278db, type: 3}
+      textureList:
+      - {fileID: 2800000, guid: 214001d99e9226b46ba99f6978e278db, type: 3}
+    - spriteList:
+      - {fileID: -1299115608, guid: 214001d99e9226b46ba99f6978e278db, type: 3}
+      textureList:
+      - {fileID: 2800000, guid: 214001d99e9226b46ba99f6978e278db, type: 3}
+    - spriteList:
+      - {fileID: 677954348, guid: 214001d99e9226b46ba99f6978e278db, type: 3}
+      textureList:
+      - {fileID: 2800000, guid: 214001d99e9226b46ba99f6978e278db, type: 3}
+    - spriteList:
+      - {fileID: 382240703, guid: 214001d99e9226b46ba99f6978e278db, type: 3}
+      textureList:
+      - {fileID: 2800000, guid: 214001d99e9226b46ba99f6978e278db, type: 3}
+    - spriteList:
+      - {fileID: -1458917478, guid: 214001d99e9226b46ba99f6978e278db, type: 3}
+      textureList:
+      - {fileID: 2800000, guid: 214001d99e9226b46ba99f6978e278db, type: 3}
+    - spriteList:
+      - {fileID: -4990633840107407455, guid: 214001d99e9226b46ba99f6978e278db, type: 3}
+      textureList:
+      - {fileID: 2800000, guid: 214001d99e9226b46ba99f6978e278db, type: 3}
+    - spriteList:
+      - {fileID: -1577374730, guid: 214001d99e9226b46ba99f6978e278db, type: 3}
+      textureList:
+      - {fileID: 2800000, guid: 214001d99e9226b46ba99f6978e278db, type: 3}
+    - spriteList:
+      - {fileID: 214948255, guid: 214001d99e9226b46ba99f6978e278db, type: 3}
+      textureList:
+      - {fileID: 2800000, guid: 214001d99e9226b46ba99f6978e278db, type: 3}
+    - spriteList:
+      - {fileID: 940418549, guid: 214001d99e9226b46ba99f6978e278db, type: 3}
+      textureList:
+      - {fileID: 2800000, guid: 214001d99e9226b46ba99f6978e278db, type: 3}
+    - spriteList:
+      - {fileID: -9054841733071266653, guid: 214001d99e9226b46ba99f6978e278db, type: 3}
+      textureList:
+      - {fileID: 2800000, guid: 214001d99e9226b46ba99f6978e278db, type: 3}
+    - spriteList:
+      - {fileID: -372836508, guid: 214001d99e9226b46ba99f6978e278db, type: 3}
+      textureList:
+      - {fileID: 2800000, guid: 214001d99e9226b46ba99f6978e278db, type: 3}
+  m_TextureList:
+  - {fileID: 2800000, guid: 214001d99e9226b46ba99f6978e278db, type: 3}
+  m_TextureScaleList:
+  - 2.5
