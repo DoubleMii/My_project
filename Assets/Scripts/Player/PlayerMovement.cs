@@ -41,7 +41,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Sound")]
     [Header("Animation")]
     [SerializeField] Animator animator;
-    private bool IsFacingRight = false;
+    private bool IsFacingRight = true;
     private ParticleSystem walkParticles;
 
     void Start()
