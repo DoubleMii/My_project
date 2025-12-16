@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using UnityEditor.EditorTools;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -8,14 +10,16 @@ public class Magnet : MonoBehaviour
     [SerializeField] private float maxDistance = 5f;
 
     [Header("Detection")]
-    [SerializeField] private float detectionRadius = 0.5f;
     [SerializeField] private LayerMask magneticLayer;
+
+    [Header("Magnet Position")]
+    [SerializeField] GameObject[] mgPos;
 
     private Transform player;
     private Vector2 offset;
-    private Vector2 magnetDirection; // Dirección del imán (WASD)
     private bool attractActive = false; // Q key
-    private bool repelActive = false; // E key
+    private bool repelActive = false;   // E key
+    private int magnetCurrDir = 0;
 
     void Start()
     {
@@ -26,39 +30,104 @@ public class Magnet : MonoBehaviour
             return;
         }
         offset = transform.position - player.position;
+
+        // Activar la primera posición por defecto (Izquierda)
+        if (mgPos != null && mgPos.Length > 0)
+        {
+            magnetCurrDir = 0;
+            for (int i = 0; i < mgPos.Length; i++)
+            {
+                if (mgPos[i] != null)
+                {
+                    mgPos[i].SetActive(i == 0);
+                }
+            }
+        }
+    }
+
+    public void Move(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            Vector2 direction = context.ReadValue<Vector2>();
+
+            if (direction.x > 0) // Derecha
+            {
+                magnetCurrDir = 1;
+                for (int i = 0; i < mgPos.Length; i++)
+                {
+                    mgPos[i].SetActive(i == magnetCurrDir);
+                }
+            }
+            else if (direction.x < 0) // Izquierda
+            {
+                magnetCurrDir = 0;
+                for (int i = 0; i < mgPos.Length; i++)
+                {
+                    mgPos[i].SetActive(i == magnetCurrDir);
+                }
+            }
+            else if (direction.y > 0) // Arriba
+            {
+                magnetCurrDir = 2;
+                for (int i = 0; i < mgPos.Length; i++)
+                {
+                    mgPos[i].SetActive(i == magnetCurrDir);
+                }
+            }
+            else if (direction.y < 0) // Abajo
+            {
+                magnetCurrDir = 3;
+                for (int i = 0; i < mgPos.Length; i++)
+                {
+                    mgPos[i].SetActive(i == magnetCurrDir);
+                }
+            }
+        }
     }
 
     void Update()
     {
         if (player == null) return;
 
-        // Mover el imán con la dirección recibida del Input System
-        if (magnetDirection.sqrMagnitude > 0)
+        // Obtener el collider del imán activo
+        GameObject activeMagnet = GetActiveMagnet();
+        if (activeMagnet == null) return;
+
+        Collider2D magnetCollider = activeMagnet.GetComponent<Collider2D>();
+        if (magnetCollider == null)
         {
-            offset += magnetDirection.normalized * moveSpeed * Time.deltaTime;
-            offset = Vector2.ClampMagnitude(offset, maxDistance);
+            Debug.LogWarning("El GameObject activo no tiene Collider2D!");
+            return;
         }
 
-        // Actualizar posición del imán
-        transform.position = player.position + player.TransformVector(offset);
+        // Detectar TODOS los objetos magnéticos dentro del collider del imán activo
+        ContactFilter2D filter = new ContactFilter2D();
+        filter.SetLayerMask(magneticLayer);
+        filter.useTriggers = true;
 
-        // Detectar objetos magnéticos cercanos
-        Collider2D col = Physics2D.OverlapCircle(transform.position, detectionRadius, magneticLayer);
+        List<Collider2D> results = new List<Collider2D>();
+        int count = Physics2D.OverlapCollider(magnetCollider, filter, results);
 
-        if (col != null)
+        // Aplicar magnetismo a todos los objetos detectados
+        for (int i = 0; i < count; i++)
         {
-            MagneticObjects mag = col.GetComponent<MagneticObjects>();
-
+            MagneticObjects mag = results[i].GetComponent<MagneticObjects>();
             if (mag != null)
             {
+                Vector3 magnetCenter = magnetCollider.bounds.center;
+                Vector3 objectPos = results[i].transform.position;
+
                 if (attractActive) // Q presionada - Atraer
                 {
-                    mag.SetTarget(transform.position);
+                    mag.SetTarget(magnetCenter);
                 }
                 else if (repelActive) // E presionada - Repeler
                 {
-                    Vector3 repelDirection = (col.transform.position - transform.position).normalized;
-                    mag.SetTarget(transform.position - repelDirection * 10f);
+                    Vector3 repelDirection = (objectPos - magnetCenter).normalized;
+                    float distance = Vector3.Distance(objectPos, magnetCenter);
+                    Vector3 repelTarget = objectPos + repelDirection * (distance + 10f);
+                    mag.SetTarget(repelTarget);
                 }
                 else // Ninguna tecla - Soltar
                 {
@@ -68,33 +137,33 @@ public class Magnet : MonoBehaviour
         }
     }
 
-    // ========== INPUT SYSTEM CALLBACKS ==========
-
-    public void MoveMagnet(InputAction.CallbackContext context)
+    // Obtiene el GameObject de imán que está activo
+    private GameObject GetActiveMagnet()
     {
-        magnetDirection = context.ReadValue<Vector2>();
+        if (mgPos != null && magnetCurrDir >= 0 && magnetCurrDir < mgPos.Length)
+        {
+            if (mgPos[magnetCurrDir] != null && mgPos[magnetCurrDir].activeSelf)
+            {
+                return mgPos[magnetCurrDir];
+            }
+        }
+        return null;
     }
 
+    // ========== INPUT SYSTEM CALLBACKS ==========
     public void Attract(InputAction.CallbackContext context)
     {
-        if (context.performed)
-            attractActive = true;
-
-        if (context.canceled)
-            attractActive = false;
+        if (context.performed) attractActive = true;
+        if (context.canceled) attractActive = false;
     }
 
     public void Repel(InputAction.CallbackContext context)
     {
-        if (context.performed)
-            repelActive = true;
-
-        if (context.canceled)
-            repelActive = false;
+        if (context.performed) repelActive = true;
+        if (context.canceled) repelActive = false;
     }
 
     // ========== GIZMOS ==========
-
     private void OnDrawGizmos()
     {
         if (player != null)
@@ -103,9 +172,17 @@ public class Magnet : MonoBehaviour
             Gizmos.color = Color.yellow;
             Gizmos.DrawWireSphere(player.position, maxDistance);
 
-            // Radio de detección
-            Gizmos.color = attractActive ? Color.green : (repelActive ? Color.red : Color.cyan);
-            Gizmos.DrawWireSphere(transform.position, detectionRadius);
+            // Dibujar el bounds del collider activo
+            GameObject activeMagnet = GetActiveMagnet();
+            if (activeMagnet != null)
+            {
+                Collider2D col = activeMagnet.GetComponent<Collider2D>();
+                if (col != null)
+                {
+                    Gizmos.color = attractActive ? Color.green : (repelActive ? Color.red : Color.cyan);
+                    Gizmos.DrawWireCube(col.bounds.center, col.bounds.size);
+                }
+            }
         }
     }
 }

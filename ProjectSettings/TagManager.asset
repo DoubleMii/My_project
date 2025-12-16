@@ -9,6 +9,9 @@ TagManager:
   - Magnet
   - Enemy
   - Borde
+  - Wall
+  - Bullet
+  - Ground
   layers:
   - Default
   - TransparentFX

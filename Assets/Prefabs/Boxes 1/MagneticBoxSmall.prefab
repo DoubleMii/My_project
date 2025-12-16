@@ -180,4 +180,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   objectSize: 1
   speed: 5
-  mass: 1
+  mass: 2
