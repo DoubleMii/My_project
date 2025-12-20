@@ -81,7 +81,7 @@ SpriteRenderer:
   m_SortingLayerID: -1027976935
   m_SortingLayer: 2
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  m_Sprite: {fileID: 7103356512838429099, guid: 44d907ec14738da4db15b5ee2c895eb5, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -154,3 +154,4 @@ MonoBehaviour:
   targetObject: {fileID: 0}
   deactivateButton: 1
   requirePlayer: 1
+  isToggleable: 0
