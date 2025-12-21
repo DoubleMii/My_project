@@ -6,7 +6,7 @@ public class Main_Menu_Controller : MonoBehaviour
 
     public void PlayGame()
     {
-        SceneManager.LoadScene("Levels 1_1");
+        SceneManager.LoadScene("Levels 1_2");
 
     }
 

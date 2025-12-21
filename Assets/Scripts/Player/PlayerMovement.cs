@@ -39,6 +39,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float bounceForceMultiplier = 0.6f;
 
     [Header("Sound")]
+
     [Header("Animation")]
     [SerializeField] Animator animator;
     private bool IsFacingRight = true;
@@ -73,11 +74,11 @@ public class PlayerMovement : MonoBehaviour
         float targetSpeed = playerDirection.x * playerSpeed;
         currentSpeed = Mathf.MoveTowards(currentSpeed, targetSpeed, (Mathf.Abs(targetSpeed) > 0.01f ? acceleration : deceleration) * Time.fixedDeltaTime);
         playerRigidbody2d.linearVelocity = new Vector2(currentSpeed, playerRigidbody2d.linearVelocity.y);
+
         animator.SetFloat("xVel", Mathf.Abs(playerRigidbody2d.linearVelocity.x));
         FlipSprite();
 
-        if (IsObject())
-            StopMagneticObject();
+        if (IsObject()) StopMagneticObject();
     }
 
     private void FlipSprite()
@@ -121,8 +122,7 @@ public class PlayerMovement : MonoBehaviour
     public bool IsGrounded()
     {
         bool grounded = Physics2D.OverlapBox(groundCheckPos.position, groundCheckSize, 0, groundLayer);
-        if (grounded)
-            isJumping = false;
+        if (grounded) isJumping = false;
         return grounded;
     }
 
@@ -186,16 +186,28 @@ public class PlayerMovement : MonoBehaviour
                 MorirJugador();
             }
         }
-    }
+        else if (collision.CompareTag("MagneticObject"))
+        {
+            // Verificar si el jugador viene desde arriba de la caja magnética
+            float playerBottom = transform.position.y - GetComponent<Collider2D>().bounds.extents.y;
+            float boxTop = collision.transform.position.y + collision.bounds.extents.y;
 
+            bool isComingFromAbove = playerBottom > boxTop && playerRigidbody2d.linearVelocity.y * gravityDirection < 0;
+
+            if (isComingFromAbove)
+            {
+                // Rebotar sobre la caja magnética sin destruirla
+                float bounceForce = jumpForce * bounceForceMultiplier * (isGravityInverted ? -1f : 1f);
+                playerRigidbody2d.linearVelocity = new Vector2(playerRigidbody2d.linearVelocity.x, bounceForce);
+            }
+        }
+    }
 
     private void MorirJugador()
     {
         Debug.Log("Player ha muerto! Reiniciando nivel...");
-
         //Reproducir animación o sonido de muerte antes de reiniciar
         // AudioManager.instance.PlayerSound(deathSound);
-
         // Reiniciar el nivel actual
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
@@ -221,4 +233,3 @@ public class PlayerMovement : MonoBehaviour
         Gizmos.DrawWireCube(objectCheckPos.position, objectCheckSize);
     }
 }
- 

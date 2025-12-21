@@ -70278,9 +70278,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1995732501160796743, guid: 3504dc3f40b07744eaccf6a702ab5e6a, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3219832491806256926, guid: 3504dc3f40b07744eaccf6a702ab5e6a, type: 3}
       propertyPath: m_Name
       value: MagneticBoxSmall
+      objectReference: {fileID: 0}
+    - target: {fileID: 3326597930457026165, guid: 3504dc3f40b07744eaccf6a702ab5e6a, type: 3}
+      propertyPath: m_SortingLayer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3326597930457026165, guid: 3504dc3f40b07744eaccf6a702ab5e6a, type: 3}
+      propertyPath: m_SortingLayerID
+      value: -1352035175
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
