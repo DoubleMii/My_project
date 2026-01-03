@@ -8,17 +8,18 @@ public class MagneticObjects : MonoBehaviour
     [Header("Movement Settings (Auto-configured by size)")]
     [SerializeField] private float speed = 5.0f;
     [SerializeField] private float mass = 1.0f;
+    [SerializeField] private bool isBullet = false;
 
     Rigidbody2D rb;
     BoxCollider2D boxCollider;
     bool hasTarget;
     Vector3 targetPosition;
 
-    // Enum con 5 tama�os diferentes
+    // Enum con 5 tamaños diferentes
     public enum ObjectSize
     {
-        Tiny,    // Muy peque�o
-        Small,   // Peque�o
+        Tiny,    // Muy pequeño
+        Small,   // Pequeño
         Medium,  // Mediano
         Large,   // Grande
         Huge     // Enorme
@@ -29,15 +30,7 @@ public class MagneticObjects : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         boxCollider = GetComponent<BoxCollider2D>();
 
-        if (rb == null)
-        {
-            Debug.LogError("MagneticObjects needs a Rigidbody2D!");
-        }
-
-        if (boxCollider == null)
-        {
-            Debug.LogError("MagneticObjects needs a BoxCollider2D!");
-        }
+        
 
         ConfigureObjectBySize();
     }
@@ -85,12 +78,18 @@ public class MagneticObjects : MonoBehaviour
         {
             rb.mass = mass;
             rb.gravityScale = 1f;
+            
+            // Congelar solo la rotación
+            rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+            
+            // OPCIÓN 2: Siempre Dynamic, pero congelamos posición cuando no está controlado
+            rb.bodyType = RigidbodyType2D.Dynamic;
         }
 
         // Ajustar el collider para que el jugador pueda pararse encima
         if (boxCollider != null)
         {
-            boxCollider.size = Vector2.one; // Se ajusta autom�ticamente con el scale
+            boxCollider.size = Vector2.one;
         }
     }
 
@@ -98,9 +97,20 @@ public class MagneticObjects : MonoBehaviour
     {
         if (hasTarget)
         {
+            // Descongelar posición para que se pueda mover
+            if (rb.constraints != RigidbodyConstraints2D.FreezeRotation)
+            {
+                rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+            }
+
             Vector2 targetDirection = (targetPosition - transform.position).normalized;
             float appliedSpeed = speed / Mathf.Sqrt(mass);
             rb.linearVelocity = targetDirection * appliedSpeed;
+        }
+        else
+        {
+            // Congelar posición X para que NO se empuje horizontalmente
+            rb.constraints = RigidbodyConstraints2D.FreezeRotation | RigidbodyConstraints2D.FreezePositionX;
         }
     }
 
@@ -113,6 +123,13 @@ public class MagneticObjects : MonoBehaviour
     public void NoTarget()
     {
         hasTarget = false;
+        
+        // La caja caerá por gravedad naturalmente
+        // Solo reseteamos la velocidad horizontal
+        if (rb != null)
+        {
+            rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
+        }
     }
 
     public ObjectSize GetSize()
@@ -120,7 +137,6 @@ public class MagneticObjects : MonoBehaviour
         return objectSize;
     }
 
-    // ? NUEVO M�TODO AGREGADO
     public bool IsBeingControlled()
     {
         return hasTarget;
