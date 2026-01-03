@@ -2,18 +2,21 @@ using UnityEngine;
 
 public class MagneticObjects : MonoBehaviour
 {
+    [Header("Object Type")]
+    [SerializeField] private bool isBullet = false; // Marcar si es una bala
+
     [Header("Object Size")]
     [SerializeField] private ObjectSize objectSize = ObjectSize.Medium;
 
     [Header("Movement Settings (Auto-configured by size)")]
     [SerializeField] private float speed = 5.0f;
     [SerializeField] private float mass = 1.0f;
-    [SerializeField] private bool isBullet = false;
 
     Rigidbody2D rb;
     BoxCollider2D boxCollider;
     bool hasTarget;
     Vector3 targetPosition;
+    private float originalXPosition;
 
     // Enum con 5 tamaños diferentes
     public enum ObjectSize
@@ -30,9 +33,23 @@ public class MagneticObjects : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         boxCollider = GetComponent<BoxCollider2D>();
 
-        
+        if (rb == null)
+        {
+            Debug.LogError("MagneticObjects needs a Rigidbody2D!");
+        }
+
+        if (boxCollider == null)
+        {
+            Debug.LogError("MagneticObjects needs a BoxCollider2D!");
+        }
 
         ConfigureObjectBySize();
+        
+        // Solo guardar posición X si NO es bala
+        if (!isBullet)
+        {
+            originalXPosition = transform.position.x;
+        }
     }
 
     private void OnValidate()
@@ -77,16 +94,18 @@ public class MagneticObjects : MonoBehaviour
         if (rb != null)
         {
             rb.mass = mass;
-            rb.gravityScale = 1f;
+            
+            // Si es bala, mantener gravedad en 0, si no, en 1
+            rb.gravityScale = isBullet ? 0f : 1f;
             
             // Congelar solo la rotación
             rb.constraints = RigidbodyConstraints2D.FreezeRotation;
             
-            // OPCIÓN 2: Siempre Dynamic, pero congelamos posición cuando no está controlado
+            // Siempre Dynamic
             rb.bodyType = RigidbodyType2D.Dynamic;
         }
 
-        // Ajustar el collider para que el jugador pueda pararse encima
+        // Ajustar el collider
         if (boxCollider != null)
         {
             boxCollider.size = Vector2.one;
@@ -97,21 +116,25 @@ public class MagneticObjects : MonoBehaviour
     {
         if (hasTarget)
         {
-            // Descongelar posición para que se pueda mover
-            if (rb.constraints != RigidbodyConstraints2D.FreezeRotation)
-            {
-                rb.constraints = RigidbodyConstraints2D.FreezeRotation;
-            }
-
+            // Cuando está siendo controlado por el imán
             Vector2 targetDirection = (targetPosition - transform.position).normalized;
             float appliedSpeed = speed / Mathf.Sqrt(mass);
             rb.linearVelocity = targetDirection * appliedSpeed;
+            
+            // Si es bala y está siendo controlada, activar gravedad
+            if (isBullet && rb.gravityScale == 0f)
+            {
+                rb.gravityScale = 1f;
+            }
         }
-        else
+        else if (!isBullet)
         {
-            // Congelar posición X para que NO se empuje horizontalmente
-            rb.constraints = RigidbodyConstraints2D.FreezeRotation | RigidbodyConstraints2D.FreezePositionX;
+            // Solo para objetos NO bala: mantener posición X fija
+            Vector2 currentPos = transform.position;
+            transform.position = new Vector2(originalXPosition, currentPos.y);
+            rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
         }
+        // Si es bala sin target, NO tocar su velocidad (dejar que vuele libre)
     }
 
     public void SetTarget(Vector3 position)
@@ -124,12 +147,17 @@ public class MagneticObjects : MonoBehaviour
     {
         hasTarget = false;
         
-        // La caja caerá por gravedad naturalmente
-        // Solo reseteamos la velocidad horizontal
-        if (rb != null)
+        if (!isBullet)
         {
-            rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
+            // Solo para objetos NO bala: guardar nueva posición X
+            originalXPosition = transform.position.x;
+            
+            if (rb != null)
+            {
+                rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
+            }
         }
+        // Si es bala, mantener su velocidad actual
     }
 
     public ObjectSize GetSize()

@@ -4,37 +4,36 @@ public class Bullet : MonoBehaviour
 {
     [SerializeField] private float velocidad = 10f;
     [SerializeField] private float tiempoMaximo = 5f;
-    [SerializeField] private float tiempoInmunidad = 0.1f; // Tiempo antes de poder colisionar
+    [SerializeField] private float tiempoInmunidad = 0.1f;
     public Vector3 Direccion = Vector2.left;
 
     private Rigidbody2D rb;
     private MagneticObjects magneticScript;
     private bool hasBeenRepelled = false;
     private bool canCollide = false;
-    private float spawnTime;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         magneticScript = GetComponent<MagneticObjects>();
-        spawnTime = Time.time;
-
-        // ASEGURAR QUE NO TENGA GRAVEDAD AL INICIO
-        if (rb != null)
+        
+        // DESACTIVAR MagneticObjects al inicio para que no interfiera
+        if (magneticScript != null)
         {
-            rb.gravityScale = 0f;
+            magneticScript.enabled = false;
         }
     }
 
     private void Start()
     {
-        // Aplicar velocidad inicial INMEDIATAMENTE
+        // FORZAR gravedad a 0
         if (rb != null)
         {
+            rb.gravityScale = 0f;
             rb.linearVelocity = Direccion.normalized * velocidad;
         }
 
-        // Permitir colisiones después de un breve momento
+        // Permitir colisiones después de un momento
         Invoke(nameof(EnableCollisions), tiempoInmunidad);
         
         // Destruir después del tiempo máximo
@@ -48,23 +47,25 @@ public class Bullet : MonoBehaviour
 
     private void FixedUpdate()
     {
-        // Si el sistema magnético está activo, la bala ha sido repelida
-        if (magneticScript != null && magneticScript.IsBeingControlled())
+        // ACTIVAR MagneticObjects solo cuando el imán la detecta
+        if (magneticScript != null)
         {
-            hasBeenRepelled = true;
-            
-            // Cuando está siendo controlada por el imán, SÍ puede tener gravedad
-            if (rb != null)
+            // Si el script está desactivado pero tiene target, activarlo
+            if (!magneticScript.enabled && magneticScript.IsBeingControlled())
             {
-                rb.gravityScale = 1f;
+                magneticScript.enabled = true;
+                hasBeenRepelled = true;
+                
+                // Activar gravedad
+                if (rb != null)
+                {
+                    rb.gravityScale = 1f;
+                }
             }
-        }
-        else if (!hasBeenRepelled)
-        {
-            // Si NO está siendo controlada Y NO ha sido repelida, mantener sin gravedad
-            if (rb != null && rb.gravityScale != 0f)
+            // Si está activado y siendo controlado
+            else if (magneticScript.enabled && magneticScript.IsBeingControlled())
             {
-                rb.gravityScale = 0f;
+                hasBeenRepelled = true;
             }
         }
     }
@@ -77,7 +78,7 @@ public class Bullet : MonoBehaviour
         // Ignorar colisiones con otras balas
         if (collision.CompareTag("Bullet")) return;
 
-        // Si la bala ha sido repelida y choca con un enemigo/cañón
+        // Si la bala ha sido repelida y choca con un enemigo
         if (hasBeenRepelled && collision.CompareTag("Enemy"))
         {
             Destroy(collision.gameObject);
@@ -85,7 +86,7 @@ public class Bullet : MonoBehaviour
             return;
         }
 
-        // Si choca con el player (el PlayerMovement maneja la lógica)
+        // Si choca con el player
         if (collision.CompareTag("Player"))
         {
             DestruirBala();
