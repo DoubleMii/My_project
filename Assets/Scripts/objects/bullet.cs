@@ -78,6 +78,9 @@ public class Bullet : MonoBehaviour
         // Ignorar colisiones con otras balas
         if (collision.CompareTag("Bullet")) return;
 
+        // Ignorar colisiones con el Magnet y sus hijos
+        if (collision.CompareTag("Magnet")) return;
+
         // Si la bala ha sido repelida y choca con un enemigo
         if (hasBeenRepelled && collision.CompareTag("Enemy"))
         {

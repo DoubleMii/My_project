@@ -148,81 +148,117 @@ public class PlayerMovement : MonoBehaviour
     }
 
     // ========== COLLISION HANDLING ==========
+    // Este método se ejecuta cuando ALGO con Trigger toca AL PLAYER
+    // Funciona SOLO si el Player tiene al menos UN collider Trigger
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Enemy") || collision.CompareTag("Bullet"))
+        // DEBUG: Ver qué está colisionando
+        Debug.Log($"TRIGGER con: {collision.gameObject.name} | Tag: {collision.tag}");
+        
+        // SOLO procesar balas
+        if (collision.CompareTag("Bullet"))
         {
-            // Si es una bala, verificar si ha sido repelida
-            Bullet bulletScript = collision.GetComponent<Bullet>();
-            bool isSafeBullet = bulletScript != null && bulletScript.HasBeenRepelled();
-
-            // Si la bala ha sido repelida, no hace da�o al jugador
-            if (isSafeBullet)
-            {
-                return; // La bala repelida no da�a al jugador
-            }
-
-            // Calculamos si el jugador est� encima del enemigo/bala
-            float playerBottom = transform.position.y - GetComponent<Collider2D>().bounds.extents.y;
-            float enemyTop = collision.transform.position.y + collision.bounds.extents.y;
-
-            // Si el jugador est� cayendo y viene desde arriba
-            bool isComingFromAbove = playerBottom > enemyTop && playerRigidbody2d.linearVelocity.y * gravityDirection < 0;
-
-            if (isComingFromAbove)
-            {
-                // Eliminar enemigo/bala
-                Destroy(collision.gameObject);
-
-                // Hacer que el jugador rebote
-                float bounceForce = jumpForce * bounceForceMultiplier * (isGravityInverted ? -1f : 1f);
-                playerRigidbody2d.linearVelocity = new Vector2(playerRigidbody2d.linearVelocity.x, bounceForce);
-
-                //AudioManager.instance.PlayerSound(enemyDeathSound);
-            }
-            else
-            {
-                // El jugador muere
-                MorirJugador();
-            }
+            Debug.Log("¡BALA DETECTADA! Procesando...");
+            HandleBulletCollision(collision);
+            return;
         }
-        else if (collision.CompareTag("MagneticObject"))
+        
+        // Ignorar todo lo demás
+        Debug.Log($"Ignorando: {collision.gameObject.name}");
+    }
+
+    // Para enemigos y objetos físicos
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        Debug.Log($"COLLISION FISICA con: {collision.gameObject.name} | Tag: {collision.gameObject.tag}");
+        
+        // Manejar colisiones físicas con enemigos
+        if (collision.gameObject.CompareTag("Enemy"))
         {
-            // Verificar si el jugador viene desde arriba de la caja magn�tica
-            float playerBottom = transform.position.y - GetComponent<Collider2D>().bounds.extents.y;
-            float boxTop = collision.transform.position.y + collision.bounds.extents.y;
+            HandleEnemyCollision(collision.collider);
+        }
+        
+        // Plataformas móviles
+        if (collision.gameObject.CompareTag("MovingPlatform"))
+        {
+            transform.parent = collision.transform;
+        }
+    }
 
-            bool isComingFromAbove = playerBottom > boxTop && playerRigidbody2d.linearVelocity.y * gravityDirection < 0;
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("MovingPlatform"))
+        {
+            transform.parent = null;
+        }
+    }
 
-            if (isComingFromAbove)
-            {
-                // Rebotar sobre la caja magn�tica sin destruirla
-                float bounceForce = jumpForce * bounceForceMultiplier * (isGravityInverted ? -1f : 1f);
-                playerRigidbody2d.linearVelocity = new Vector2(playerRigidbody2d.linearVelocity.x, bounceForce);
-            }
+    private void HandleBulletCollision(Collider2D collision)
+    {
+        // Si es una bala, verificar si ha sido repelida
+        Bullet bulletScript = collision.GetComponent<Bullet>();
+        bool isSafeBullet = bulletScript != null && bulletScript.HasBeenRepelled();
+
+        // Si la bala ha sido repelida, no hace daño al jugador
+        if (isSafeBullet)
+        {
+            return;
+        }
+
+        // El jugador muere
+        MorirJugador();
+    }
+
+    private void HandleEnemyCollision(Collider2D collision)
+    {
+        // Calculamos si el jugador está encima del enemigo
+        float playerBottom = transform.position.y - GetComponent<Collider2D>().bounds.extents.y;
+        float enemyTop = collision.transform.position.y + collision.bounds.extents.y;
+
+        // Si el jugador está cayendo y viene desde arriba
+        bool isComingFromAbove = playerBottom > enemyTop && playerRigidbody2d.linearVelocity.y * gravityDirection < 0;
+
+        if (isComingFromAbove)
+        {
+            // Eliminar enemigo
+            Destroy(collision.gameObject);
+
+            // Hacer que el jugador rebote
+            float bounceForce = jumpForce * bounceForceMultiplier * (isGravityInverted ? -1f : 1f);
+            playerRigidbody2d.linearVelocity = new Vector2(playerRigidbody2d.linearVelocity.x, bounceForce);
+
+            //AudioManager.instance.PlayerSound(enemyDeathSound);
+        }
+        else
+        {
+            // El jugador muere
+            MorirJugador();
+        }
+    }
+
+    private void HandleMagneticObjectTrigger(Collider2D collision)
+    {
+        // Verificar si el jugador viene desde arriba de la caja magnética
+        float playerBottom = transform.position.y - GetComponent<Collider2D>().bounds.extents.y;
+        float boxTop = collision.transform.position.y + collision.bounds.extents.y;
+
+        bool isComingFromAbove = playerBottom > boxTop && playerRigidbody2d.linearVelocity.y * gravityDirection < 0;
+
+        if (isComingFromAbove)
+        {
+            // Rebotar sobre la caja magnética sin destruirla
+            float bounceForce = jumpForce * bounceForceMultiplier * (isGravityInverted ? -1f : 1f);
+            playerRigidbody2d.linearVelocity = new Vector2(playerRigidbody2d.linearVelocity.x, bounceForce);
         }
     }
 
     private void MorirJugador()
     {
         Debug.Log("Player ha muerto! Reiniciando nivel...");
-        //Reproducir animaci�n o sonido de muerte antes de reiniciar
+        //Reproducir animación o sonido de muerte antes de reiniciar
         // AudioManager.instance.PlayerSound(deathSound);
         // Reiniciar el nivel actual
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    }
-
-    // ========== PLATFORM HANDLING ==========
-    private void OnCollisionEnter2D(Collision2D c)
-    {
-        if (c.gameObject.CompareTag("MovingPlatform"))
-            transform.parent = c.transform;
-    }
-
-    private void OnCollisionExit2D(Collision2D c)
-    {
-        if (c.gameObject.CompareTag("MovingPlatform"))
-            transform.parent = null;
     }
 
     // ========== GIZMOS ==========
