@@ -43,17 +43,27 @@ MonoBehaviour:
   - m_enabled: 1
     m_path: Assets/Scenes/Main_Menu.unity
   - m_enabled: 1
+    m_path: Assets/Scenes/Levels 1_1.unity
+  - m_enabled: 1
     m_path: Assets/Scenes/Levels 1_2.unity
   - m_enabled: 1
     m_path: Assets/Scenes/Levels 1_3.unity
   - m_enabled: 1
+    m_path: Assets/Scenes/Levels 2_1.unity
+  - m_enabled: 1
     m_path: Assets/Scenes/Levels 2_2.unity
+  - m_enabled: 1
+    m_path: Assets/Scenes/Levels 3-1.unity
   - m_enabled: 1
     m_path: Assets/Scenes/Levels 3-2.unity
   - m_enabled: 1
     m_path: Assets/Scenes/Levels 3-3.unity
   - m_enabled: 1
     m_path: Assets/Scenes/Levels 4-1.unity
+  - m_enabled: 1
+    m_path: Assets/Scenes/Levels 4-2.unity
+  - m_enabled: 1
+    m_path: Assets/Scenes/base_vacia 1.unity
   m_ScriptingDefines: []
   m_PlayerSettingsYaml:
     m_Settings: []

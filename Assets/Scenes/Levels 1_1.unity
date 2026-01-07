@@ -185,6 +185,10 @@ PrefabInstance:
       propertyPath: targetObject
       value: 
       objectReference: {fileID: 1598599000}
+    - target: {fileID: 5674771070715198837, guid: 76d73b095e6385143825c4e2818410da, type: 3}
+      propertyPath: requirePlayer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8745383676212541224, guid: 76d73b095e6385143825c4e2818410da, type: 3}
       propertyPath: m_LocalPosition.x
       value: 40.013
@@ -43633,18 +43637,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: MagneticBoxMedium (1)
       objectReference: {fileID: 0}
-    - target: {fileID: 3219832491806256926, guid: 1e35519a68dc13744beed7bc4b1b4831, type: 3}
-      propertyPath: m_TagString
-      value: Boxes
-      objectReference: {fileID: 0}
-    - target: {fileID: 3326597930457026165, guid: 1e35519a68dc13744beed7bc4b1b4831, type: 3}
-      propertyPath: m_SortingLayer
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 3326597930457026165, guid: 1e35519a68dc13744beed7bc4b1b4831, type: 3}
-      propertyPath: m_SortingLayerID
-      value: -1352035175
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -43705,6 +43697,22 @@ PrefabInstance:
     - target: {fileID: 3219832491806256926, guid: 1e35519a68dc13744beed7bc4b1b4831, type: 3}
       propertyPath: m_TagString
       value: Boxes
+      objectReference: {fileID: 0}
+    - target: {fileID: 3326597930457026165, guid: 1e35519a68dc13744beed7bc4b1b4831, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 1189535530315151480, guid: 22e2bfe997a80094685f34eaea8790c1, type: 3}
+    - target: {fileID: 3326597930457026165, guid: 1e35519a68dc13744beed7bc4b1b4831, type: 3}
+      propertyPath: m_Color.b
+      value: 0.9245283
+      objectReference: {fileID: 0}
+    - target: {fileID: 3326597930457026165, guid: 1e35519a68dc13744beed7bc4b1b4831, type: 3}
+      propertyPath: m_Color.g
+      value: 0.46662515
+      objectReference: {fileID: 0}
+    - target: {fileID: 3326597930457026165, guid: 1e35519a68dc13744beed7bc4b1b4831, type: 3}
+      propertyPath: m_Color.r
+      value: 0.4757843
       objectReference: {fileID: 0}
     - target: {fileID: 3326597930457026165, guid: 1e35519a68dc13744beed7bc4b1b4831, type: 3}
       propertyPath: m_SortingLayer
