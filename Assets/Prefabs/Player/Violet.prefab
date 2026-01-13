@@ -374,11 +374,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3235159572274291059, guid: 93a1e2c0d9dba2241ab4e63659abef8c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -11.48
+      value: -9.71
       objectReference: {fileID: 0}
     - target: {fileID: 3235159572274291059, guid: 93a1e2c0d9dba2241ab4e63659abef8c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -15.79
+      value: -15.13
       objectReference: {fileID: 0}
     - target: {fileID: 3235159572274291059, guid: 93a1e2c0d9dba2241ab4e63659abef8c, type: 3}
       propertyPath: m_LocalPosition.z
@@ -413,9 +413,25 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5697827817128477724, guid: 93a1e2c0d9dba2241ab4e63659abef8c, type: 3}
+      propertyPath: jumpForce
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5697827817128477724, guid: 93a1e2c0d9dba2241ab4e63659abef8c, type: 3}
       propertyPath: magneticUp
       value: 
       objectReference: {fileID: 159354339454149882}
+    - target: {fileID: 5697827817128477724, guid: 93a1e2c0d9dba2241ab4e63659abef8c, type: 3}
+      propertyPath: playerSpeed
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5697827817128477724, guid: 93a1e2c0d9dba2241ab4e63659abef8c, type: 3}
+      propertyPath: acceleration
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5697827817128477724, guid: 93a1e2c0d9dba2241ab4e63659abef8c, type: 3}
+      propertyPath: deceleration
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 5697827817128477724, guid: 93a1e2c0d9dba2241ab4e63659abef8c, type: 3}
       propertyPath: magneticDown
       value: 
@@ -430,11 +446,11 @@ PrefabInstance:
       objectReference: {fileID: 4219183161408611398}
     - target: {fileID: 5697827817128477724, guid: 93a1e2c0d9dba2241ab4e63659abef8c, type: 3}
       propertyPath: groundCheckSize.x
-      value: 2.58
+      value: 2.86
       objectReference: {fileID: 0}
     - target: {fileID: 5697827817128477724, guid: 93a1e2c0d9dba2241ab4e63659abef8c, type: 3}
       propertyPath: groundCheckSize.y
-      value: 0.65
+      value: 0.69
       objectReference: {fileID: 0}
     - target: {fileID: 5697827817128477724, guid: 93a1e2c0d9dba2241ab4e63659abef8c, type: 3}
       propertyPath: objectCheckSize.x
@@ -443,6 +459,10 @@ PrefabInstance:
     - target: {fileID: 7034059113244768138, guid: 93a1e2c0d9dba2241ab4e63659abef8c, type: 3}
       propertyPath: m_Layer
       value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 7435766561269781804, guid: 93a1e2c0d9dba2241ab4e63659abef8c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.158
       objectReference: {fileID: 0}
     - target: {fileID: 7435766561269781804, guid: 93a1e2c0d9dba2241ab4e63659abef8c, type: 3}
       propertyPath: m_LocalPosition.y
