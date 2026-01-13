@@ -45,6 +45,12 @@ public class PlayerMovement : MonoBehaviour
     private bool IsFacingRight = true;
     private ParticleSystem walkParticles;
 
+    [Header("Magnetic Colliders")]
+    [SerializeField] private Collider2D magneticLeft;
+    [SerializeField] private Collider2D magneticRight;
+    [SerializeField] private Collider2D magneticUp;
+    [SerializeField] private Collider2D magneticDown;
+
     void Start()
     {
         playerRigidbody2d = GetComponent<Rigidbody2D>();
@@ -147,27 +153,25 @@ public class PlayerMovement : MonoBehaviour
             graphicsChild.rotation = Quaternion.Euler(0, 0, isGravityInverted ? 180f : 0f);
     }
 
-    // ========== COLLISION HANDLING ==========
-    // Este método se ejecuta cuando ALGO con Trigger toca AL PLAYER
-    // Funciona SOLO si el Player tiene al menos UN collider Trigger
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        // DEBUG: Ver qué está colisionando
-        Debug.Log($"TRIGGER con: {collision.gameObject.name} | Tag: {collision.tag}");
-        
-        // SOLO procesar balas
-        if (collision.CompareTag("Bullet"))
-        {
-            Debug.Log("¡BALA DETECTADA! Procesando...");
-            HandleBulletCollision(collision);
-            return;
-        }
-        
-        // Ignorar todo lo demás
-        Debug.Log($"Ignorando: {collision.gameObject.name}");
-    }
+
 
     // Para enemigos y objetos físicos
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (!collision.CompareTag("Bullet"))
+            return;
+
+        if ((magneticLeft != null && magneticLeft.IsTouching(collision)) ||
+            (magneticRight != null && magneticRight.IsTouching(collision)) ||
+            (magneticUp != null && magneticUp.IsTouching(collision)) ||
+            (magneticDown != null && magneticDown.IsTouching(collision)))
+        {
+            return;
+        }
+
+        HandleBulletCollision(collision);
+    }
     private void OnCollisionEnter2D(Collision2D collision)
     {
         Debug.Log($"COLLISION FISICA con: {collision.gameObject.name} | Tag: {collision.gameObject.tag}");
