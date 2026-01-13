@@ -3,118 +3,167 @@ using UnityEngine;
 public class ButtonController : MonoBehaviour
 {
     [Header("Button Type")]
-    [SerializeField] private ButtonType buttonType = ButtonType.OpenDoor; //Type of button action.
+    [SerializeField] private ButtonType buttonType = ButtonType.OpenDoor;
 
     [Header("Target Object")]
-    [SerializeField] private GameObject targetObject; //Object that will be affected by the button (not needed for InvertGravity).
+    [SerializeField] private GameObject targetObject;
 
-    [Header("Settings")]
-    [SerializeField] private bool deactivateButton = true; //Should the button deactivate after use?
-    [SerializeField] private bool requirePlayer = true; //Does it require the player to activate?
-    [SerializeField] private bool isToggleable = false; //Can the button be toggled on/off? (useful for gravity inversion).
+    [Header("Activation Settings")]
+    [SerializeField] private bool requirePlayer = true; // ¿Requiere al jugador?
+    [SerializeField] private bool canBeActivatedByBoxes = true; // ¿Las cajas pueden activarlo?
+    [SerializeField] private bool deactivateButton = true;
+    [SerializeField] private bool isToggleable = false;
 
-    private bool isActivated = false; //Track if button is currently activated (for toggleable buttons).
+    private bool isActivated = false;
 
-    //Enum to define button types.
     public enum ButtonType
     {
-        OpenDoor,      //Enables the door collider.
-        OpenPillar,    //Deactivates pillars or obstacles.
-        InvertGravity  //Inverts the player's gravity with visual flip.
+        OpenDoor,
+        OpenPillar,
+        InvertGravity
     }
 
-    private void OnTriggerEnter2D(Collider2D collision) //Function called when something enters the button trigger.
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        //Check if player is required and if the collision is with the player.
-        if (requirePlayer && !collision.CompareTag("Player"))
-        {
-            return; //Exit if not the player.
-        }
-
-        //If button is toggleable and already activated, don't activate again.
+        // Si es toggleable y ya está activado, no hacer nada
         if (isToggleable && isActivated)
         {
             return;
         }
 
-        //Execute action based on button type.
+        bool canActivate = false;
+
+        // Verificar si puede activarse según quién lo toca
+        if (collision.CompareTag("Player"))
+        {
+            canActivate = true; // El player siempre puede activar (si requirePlayer está en true se valida después)
+        }
+        else if (collision.CompareTag("MagneticObjects") && canBeActivatedByBoxes)
+        {
+            canActivate = true; // Las cajas magnéticas pueden activar si está permitido
+        }
+
+        // Si requirePlayer está activo, SOLO el player puede activar
+        if (requirePlayer && !collision.CompareTag("Player"))
+        {
+            return;
+        }
+
+        // Si no puede activar, salir
+        if (!canActivate)
+        {
+            return;
+        }
+
+        // Ejecutar acción del botón
+        ExecuteButtonAction(collision);
+
+        isActivated = true;
+
+        // Desactivar botón si está configurado y no es toggleable
+        if (deactivateButton && !isToggleable)
+        {
+            gameObject.SetActive(false);
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        // Si es toggleable, permitir reactivación cuando sale
+        if (isToggleable)
+        {
+            if ((requirePlayer && collision.CompareTag("Player")) ||
+                (canBeActivatedByBoxes && collision.CompareTag("MagneticObjects")))
+            {
+                isActivated = false;
+            }
+        }
+    }
+
+    private void ExecuteButtonAction(Collider2D collision)
+    {
         switch (buttonType)
         {
             case ButtonType.OpenDoor:
-                OpenDoor(); //Open the door.
+                OpenDoor();
                 break;
 
             case ButtonType.OpenPillar:
-                OpenPillar(); //Remove the pillar.
+                OpenPillar();
                 break;
 
             case ButtonType.InvertGravity:
-                InvertGravity(collision); //Invert player's gravity with flip.
+                // Solo el player puede invertir gravedad
+                if (collision.CompareTag("Player"))
+                {
+                    InvertGravity(collision);
+                }
                 break;
         }
-
-        isActivated = true; //Mark button as activated.
-
-        //Deactivate button if configured to do so and not toggleable.
-        if (deactivateButton && !isToggleable)
-        {
-            gameObject.SetActive(false); //Deactivate the button after use.
-        }
     }
 
-    private void OnTriggerExit2D(Collider2D collision) //Function called when something exits the button trigger.
+    private void OpenDoor()
     {
-        //If button is toggleable, allow reactivation when player leaves.
-        if (isToggleable && requirePlayer && collision.CompareTag("Player"))
+        if (targetObject == null)
         {
-            isActivated = false; //Reset activation state.
+            Debug.LogWarning("ButtonController: No target object assigned!");
+            return;
         }
-    }
 
-    private void OpenDoor() //Function to open the door.
-    {
-        if (targetObject != null)
+        CapsuleCollider2D doorCollider = targetObject.GetComponent<CapsuleCollider2D>();
+        if (doorCollider != null)
         {
-            CapsuleCollider2D doorCollider = targetObject.GetComponent<CapsuleCollider2D>(); //Get the door collider.
-            if (doorCollider != null)
-            {
-                doorCollider.enabled = true; //Enable the door collider.
-            }
-            else
-            {
-                Debug.LogWarning("Target object doesn't have a CapsuleCollider2D component!");
-            }
+            doorCollider.enabled = true;
+            Debug.Log("ButtonController: Door opened!");
         }
         else
         {
-            Debug.LogWarning("No target object assigned to the button!");
+            Debug.LogWarning("ButtonController: Target object doesn't have CapsuleCollider2D!");
         }
     }
 
-    private void OpenPillar() //Function to remove the pillar.
+    private void OpenPillar()
     {
-        if (targetObject != null)
+        if (targetObject == null)
         {
-            targetObject.SetActive(false); //Deactivate the pillar.
+            Debug.LogWarning("ButtonController: No target object assigned!");
+            return;
         }
-        else
-        {
-            Debug.LogWarning("No target object assigned to the button!");
-        }
+
+        targetObject.SetActive(false);
+        Debug.Log("ButtonController: Pillar removed!");
     }
 
-    private void InvertGravity(Collider2D collision) //Function to invert player's gravity with visual flip.
+    private void InvertGravity(Collider2D collision)
     {
-        PlayerMovement playerMovement = collision.GetComponent<PlayerMovement>(); //Get the PlayerMovement script.
+        PlayerMovement playerMovement = collision.GetComponent<PlayerMovement>();
 
         if (playerMovement != null)
         {
-            playerMovement.ToggleGravity(); //Call the ToggleGravity function in PlayerMovement to invert gravity and flip sprite.
-            Debug.Log("Player gravity inverted!");
+            playerMovement.ToggleGravity();
+            Debug.Log("ButtonController: Player gravity inverted!");
         }
         else
         {
-            Debug.LogWarning("Player doesn't have a PlayerMovement component!");
+            Debug.LogWarning("ButtonController: Player doesn't have PlayerMovement component!");
+        }
+    }
+
+    private void OnDrawGizmos()
+    {
+        // Dibujar línea hacia el objeto target
+        if (targetObject != null && buttonType != ButtonType.InvertGravity)
+        {
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawLine(transform.position, targetObject.transform.position);
+        }
+
+        // Dibujar el área del botón
+        Collider2D col = GetComponent<Collider2D>();
+        if (col != null)
+        {
+            Gizmos.color = isActivated ? Color.green : Color.cyan;
+            Gizmos.DrawWireCube(col.bounds.center, col.bounds.size);
         }
     }
 }

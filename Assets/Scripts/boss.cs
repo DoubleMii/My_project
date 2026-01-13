@@ -105,7 +105,7 @@ public class BossCanon : MonoBehaviour
         Debug.Log($"Boss teletransportado a posición {index}: {cachedPositions[index]}");
     }
 
-    private void StartShooting()
+    public void StartShooting()
     {
         if (shootingRoutine != null)
             StopCoroutine(shootingRoutine);
@@ -114,7 +114,7 @@ public class BossCanon : MonoBehaviour
         shootingRoutine = StartCoroutine(ShootingLoop());
     }
 
-    private void StopShooting()
+    public void StopShooting()
     {
         canShoot = false;
         if (shootingRoutine != null)
