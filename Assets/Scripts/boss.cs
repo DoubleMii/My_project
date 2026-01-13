@@ -74,7 +74,7 @@ public class BossCanon : MonoBehaviour
         StartCoroutine(TeleportCycle());
     }
 
-    private IEnumerator TeleportCycle()
+    public IEnumerator TeleportCycle()
     {
         while (true)
         {
