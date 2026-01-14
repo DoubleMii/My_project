@@ -172,7 +172,7 @@ MonoBehaviour:
   movementType: 0
   direction: {x: 1, y: 0}
   distance: 20
-  speed: 5
+  speed: 4
   radius: 3
   circularSpeed: 2
   centerOffset: {x: 0, y: 0}
@@ -46387,11 +46387,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2299357896504928859, guid: a1e4b5d0c6e06014199ee9a1be14ff3b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 56.8
+      value: 5.38
       objectReference: {fileID: 0}
     - target: {fileID: 2299357896504928859, guid: a1e4b5d0c6e06014199ee9a1be14ff3b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 15.2
+      value: 9.8
       objectReference: {fileID: 0}
     - target: {fileID: 2299357896504928859, guid: a1e4b5d0c6e06014199ee9a1be14ff3b, type: 3}
       propertyPath: m_LocalPosition.z
@@ -46600,7 +46600,7 @@ MonoBehaviour:
   movementType: 0
   direction: {x: -1, y: 0}
   distance: 20
-  speed: 5
+  speed: 4
   radius: 3
   circularSpeed: 2
   centerOffset: {x: 0, y: 0}
