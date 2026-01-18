@@ -9,8 +9,8 @@ public class ButtonController : MonoBehaviour
     [SerializeField] private GameObject targetObject;
 
     [Header("Activation Settings")]
-    [SerializeField] private bool requirePlayer = true; // ¿Requiere al jugador?
-    [SerializeField] private bool canBeActivatedByBoxes = true; // ¿Las cajas pueden activarlo?
+    [SerializeField] private bool requirePlayer = true; // Requiere al jugador?
+    [SerializeField] private bool canBeActivatedByBoxes = true; // Las cajas pueden activarlo?
     [SerializeField] private bool deactivateButton = true;
     [SerializeField] private bool isToggleable = false;
 
@@ -25,42 +25,41 @@ public class ButtonController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        // Si es toggleable y ya está activado, no hacer nada
+        Debug.Log($"Button '{gameObject.name}' triggered by '{collision.gameObject.name}' (Tag: {collision.tag})");
+
+        // Si es toggleable y ya esta activado, no hacer nada
         if (isToggleable && isActivated)
         {
+            Debug.Log("Button already activated and is toggleable. Ignoring.");
             return;
         }
 
         bool canActivate = false;
 
-        // Verificar si puede activarse según quién lo toca
-        if (collision.CompareTag("Player"))
+        // Validacion robusta por Componente Y por Tag
+        if (collision.GetComponent<PlayerMovement>() != null || collision.CompareTag("Player"))
         {
-            canActivate = true; // El player siempre puede activar (si requirePlayer está en true se valida después)
+            canActivate = true;
         }
-        else if (collision.CompareTag("MagneticObjects") && canBeActivatedByBoxes)
+        else if ((collision.GetComponent<MagneticObjects>() != null || collision.CompareTag("MagneticObjects")) && canBeActivatedByBoxes)
         {
-            canActivate = true; // Las cajas magnéticas pueden activar si está permitido
-        }
-
-        // Si requirePlayer está activo, SOLO el player puede activar
-        if (requirePlayer && !collision.CompareTag("Player"))
-        {
-            return;
+            canActivate = true;
         }
 
         // Si no puede activar, salir
         if (!canActivate)
         {
+            Debug.Log("Object cannot activate this button.");
             return;
         }
 
-        // Ejecutar acción del botón
+        // Ejecutar accion del boton
         ExecuteButtonAction(collision);
 
         isActivated = true;
+        Debug.Log($"Button '{gameObject.name}' ACTIVATED!");
 
-        // Desactivar botón si está configurado y no es toggleable
+        // Desactivar boton si esta configurado y no es toggleable
         if (deactivateButton && !isToggleable)
         {
             gameObject.SetActive(false);
@@ -69,7 +68,7 @@ public class ButtonController : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        // Si es toggleable, permitir reactivación cuando sale
+        // Si es toggleable, permitir reactivacion cuando sale
         if (isToggleable)
         {
             if ((requirePlayer && collision.CompareTag("Player")) ||
@@ -151,14 +150,14 @@ public class ButtonController : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        // Dibujar línea hacia el objeto target
+        // Dibujar linea hacia el objeto target
         if (targetObject != null && buttonType != ButtonType.InvertGravity)
         {
             Gizmos.color = Color.yellow;
             Gizmos.DrawLine(transform.position, targetObject.transform.position);
         }
 
-        // Dibujar el área del botón
+        // Dibujar el area del boton
         Collider2D col = GetComponent<Collider2D>();
         if (col != null)
         {

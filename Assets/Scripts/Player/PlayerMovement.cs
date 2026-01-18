@@ -5,15 +5,15 @@ using UnityEngine.SceneManagement;
 public class PlayerMovement : MonoBehaviour
 {
     [Header("Movement")]
-    [SerializeField] private float playerSpeed = 2f;
-    [SerializeField] private float acceleration = 10f;
-    [SerializeField] private float deceleration = 10f;
+    [SerializeField] private float playerSpeed = 8f;
+    [SerializeField] private float acceleration = 100f;
+    [SerializeField] private float deceleration = 100f;
     private Rigidbody2D playerRigidbody2d;
     public Vector2 playerDirection;
     private float currentSpeed;
 
     [Header("Jump")]
-    [SerializeField] private float jumpForce = 5f;
+    [SerializeField] private float jumpForce = 14f;
     [SerializeField] private float jumpCutMultiplier = 0.5f;
     [SerializeField] private float fallMultiplier = 2.5f;
     [SerializeField] private float lowJumpMultiplier = 2f;
@@ -30,7 +30,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] LayerMask objectLayer;
 
     [Header("Gravity Inversion")]
-    [SerializeField] private float gravityScale = 1f;
+    [SerializeField] private float gravityScale = 3f;
     private bool isGravityInverted = false;
     private int gravityDirection = 1;
     [SerializeField] private Transform graphicsChild;
