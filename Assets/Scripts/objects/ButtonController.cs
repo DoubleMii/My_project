@@ -9,8 +9,8 @@ public class ButtonController : MonoBehaviour
     [SerializeField] private GameObject targetObject;
 
     [Header("Activation Settings")]
-    [SerializeField] private bool requirePlayer = true; // Requiere al jugador?
-    [SerializeField] private bool canBeActivatedByBoxes = true; // Las cajas pueden activarlo?
+    [SerializeField] private bool requirePlayer = true;
+    [SerializeField] private bool canBeActivatedByBoxes = true;
     [SerializeField] private bool deactivateButton = true;
     [SerializeField] private bool isToggleable = false;
 
@@ -25,12 +25,8 @@ public class ButtonController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log($"Button '{gameObject.name}' triggered by '{collision.gameObject.name}' (Tag: {collision.tag})");
-
-        // Si es toggleable y ya esta activado, no hacer nada
         if (isToggleable && isActivated)
         {
-            Debug.Log("Button already activated and is toggleable. Ignoring.");
             return;
         }
 
@@ -49,7 +45,6 @@ public class ButtonController : MonoBehaviour
         // Si no puede activar, salir
         if (!canActivate)
         {
-            Debug.Log("Object cannot activate this button.");
             return;
         }
 
@@ -57,7 +52,6 @@ public class ButtonController : MonoBehaviour
         ExecuteButtonAction(collision);
 
         isActivated = true;
-        Debug.Log($"Button '{gameObject.name}' ACTIVATED!");
 
         // Desactivar boton si esta configurado y no es toggleable
         if (deactivateButton && !isToggleable)
@@ -105,7 +99,6 @@ public class ButtonController : MonoBehaviour
     {
         if (targetObject == null)
         {
-            Debug.LogWarning("ButtonController: No target object assigned!");
             return;
         }
 
@@ -113,11 +106,6 @@ public class ButtonController : MonoBehaviour
         if (doorCollider != null)
         {
             doorCollider.enabled = true;
-            Debug.Log("ButtonController: Door opened!");
-        }
-        else
-        {
-            Debug.LogWarning("ButtonController: Target object doesn't have CapsuleCollider2D!");
         }
     }
 
@@ -125,12 +113,10 @@ public class ButtonController : MonoBehaviour
     {
         if (targetObject == null)
         {
-            Debug.LogWarning("ButtonController: No target object assigned!");
             return;
         }
 
         targetObject.SetActive(false);
-        Debug.Log("ButtonController: Pillar removed!");
     }
 
     private void InvertGravity(Collider2D collision)
@@ -140,11 +126,6 @@ public class ButtonController : MonoBehaviour
         if (playerMovement != null)
         {
             playerMovement.ToggleGravity();
-            Debug.Log("ButtonController: Player gravity inverted!");
-        }
-        else
-        {
-            Debug.LogWarning("ButtonController: Player doesn't have PlayerMovement component!");
         }
     }
 

@@ -14,7 +14,7 @@ public class AudioManager : MonoBehaviour
         }
         else
         {
-            Debug.LogError("There is two or more Audio Managers");
+            Destroy(gameObject);
         }
     }
     public void PlayerSound(AudioClip audioClip)

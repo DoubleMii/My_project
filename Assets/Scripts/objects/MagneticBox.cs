@@ -35,12 +35,10 @@ public class MagneticObjects : MonoBehaviour
 
         if (rb == null)
         {
-            Debug.LogError("MagneticObjects needs a Rigidbody2D!");
         }
 
         if (boxCollider == null)
         {
-            Debug.LogError("MagneticObjects needs a BoxCollider2D!");
         }
 
         ConfigureObjectBySize();
@@ -103,6 +101,9 @@ public class MagneticObjects : MonoBehaviour
             
             // Siempre Dynamic
             rb.bodyType = RigidbodyType2D.Dynamic;
+            
+            // Initial state: Freeze Position X (prevent pushing) + Freeze Rotation
+            rb.constraints = RigidbodyConstraints2D.FreezeRotation | RigidbodyConstraints2D.FreezePositionX;
         }
 
         // Ajustar el collider
@@ -116,12 +117,16 @@ public class MagneticObjects : MonoBehaviour
     {
         if (hasTarget)
         {
-            // Cuando está siendo controlado por el imán
+            // Vector hacia el objetivo
             Vector2 targetDirection = (targetPosition - transform.position).normalized;
-            float appliedSpeed = speed / Mathf.Sqrt(mass);
-            rb.linearVelocity = targetDirection * appliedSpeed;
             
-            // Si es bala y está siendo controlada, activar gravedad
+            // Velocidad basada en masa
+            float appliedSpeed = speed / Mathf.Sqrt(mass);
+            
+            // Aplicar velocidad
+            rb.linearVelocity = targetDirection * appliedSpeed;
+
+            // Si es bala y está siendo controlada, activar gravedad si estaba en 0
             if (isBullet && rb.gravityScale == 0f)
             {
                 rb.gravityScale = 1f;
@@ -129,35 +134,45 @@ public class MagneticObjects : MonoBehaviour
         }
         else if (!isBullet)
         {
-            // Solo para objetos NO bala: mantener posición X fija
-            Vector2 currentPos = transform.position;
-            transform.position = new Vector2(originalXPosition, currentPos.y);
-            rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
+             // Si no es bala y no tiene target, aseguramos que no se mueva en X
+             // (El constraint FreezePositionX se encarga, pero esto es un refuerzo)
+             rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
         }
-        // Si es bala sin target, NO tocar su velocidad (dejar que vuele libre)
     }
 
     public void SetTarget(Vector3 position)
     {
         targetPosition = position;
-        hasTarget = true;
+        
+        if (!hasTarget)
+        {
+            hasTarget = true;
+            // Desbloquear movimiento en X para que el imán pueda moverlo
+            if (rb != null)
+                rb.constraints = RigidbodyConstraints2D.FreezeRotation; // Solo rotación congelada
+        }
     }
 
     public void NoTarget()
     {
-        hasTarget = false;
-        
-        if (!isBullet)
+        if (hasTarget)
         {
-            // Solo para objetos NO bala: guardar nueva posición X
-            originalXPosition = transform.position.x;
+            hasTarget = false;
             
-            if (rb != null)
+            if (!isBullet)
             {
-                rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
+                // Bloquear movimiento en X para que el jugador no lo empuje
+                if (rb != null)
+                {
+                    rb.constraints = RigidbodyConstraints2D.FreezeRotation | RigidbodyConstraints2D.FreezePositionX;
+                    rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
+                }
+                
+                // Guardar posición actual como referencia (aunque con FreezeX ya no es necesario resetearla)
+                originalXPosition = transform.position.x;
             }
         }
-        // Si es bala, mantener su velocidad actual
+        // Si es bala, mantener su velocidad actual (fly free)
     }
 
     public ObjectSize GetSize()

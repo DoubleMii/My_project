@@ -4,18 +4,17 @@ using UnityEngine.UI;
 public class BossHealthBar : MonoBehaviour
 {
     [Header("UI References")]
-    [SerializeField] private Slider healthSlider;      // Arrastra tu Slider aquí
+    [SerializeField] private Slider healthSlider;      // Arrastra tu Slider aquÃ­
     [SerializeField] private Image fillImage;          // Opcional: para cambiar color por fases
 
     private BossHealthAndStun bossHealth;
 
     private void Start()
     {
-        // Busca el boss automáticamente (o arrastra manual si prefieres)
-        bossHealth = FindObjectOfType<BossHealthAndStun>();
+        // Busca el boss automÃ¡ticamente (o arrastra manual si prefieres)
+        bossHealth = FindFirstObjectByType<BossHealthAndStun>();
         if (bossHealth == null)
         {
-            Debug.LogError("¡No se encontró BossHealthAndStun en la escena!");
             return;
         }
 
@@ -50,4 +49,3 @@ public class BossHealthBar : MonoBehaviour
             bossHealth.OnHealthChanged -= UpdateHealthBar;
     }
 }
-

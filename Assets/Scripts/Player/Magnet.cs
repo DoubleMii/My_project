@@ -5,7 +5,6 @@ using UnityEngine.InputSystem;
 public class Magnet : MonoBehaviour
 {
     [Header("Magnet Movement")]
-    [SerializeField] private float moveSpeed = 8f;
     [SerializeField] private float maxDistance = 5f;
 
     [Header("Detection")]
@@ -25,12 +24,11 @@ public class Magnet : MonoBehaviour
         player = transform.parent;
         if (player == null)
         {
-            Debug.LogError("Magnet needs to be child of Player!");
             return;
         }
         offset = transform.position - player.position;
 
-        // Activar la primera posiciÛn por defecto (Izquierda)
+        // Activar la primera posici√≥n por defecto (Izquierda)
         if (mgPos != null && mgPos.Length > 0)
         {
             magnetCurrDir = 0;
@@ -89,18 +87,17 @@ public class Magnet : MonoBehaviour
     {
         if (player == null) return;
 
-        // Obtener el collider del im·n activo
+        // Obtener el collider del im√°n activo
         GameObject activeMagnet = GetActiveMagnet();
         if (activeMagnet == null) return;
 
         Collider2D magnetCollider = activeMagnet.GetComponent<Collider2D>();
         if (magnetCollider == null)
         {
-            Debug.LogWarning("El GameObject activo no tiene Collider2D!");
             return;
         }
 
-        // Detectar TODOS los objetos magnÈticos dentro del collider del im·n activo
+        // Detectar TODOS los objetos magn√©ticos dentro del collider del im√°n activo
         ContactFilter2D filter = new ContactFilter2D();
         filter.SetLayerMask(magneticLayer);
         filter.useTriggers = true;
@@ -136,7 +133,7 @@ public class Magnet : MonoBehaviour
         }
     }
 
-    // Obtiene el GameObject de im·n que est· activo
+    // Obtiene el GameObject de im√°n que est√° activo
     private GameObject GetActiveMagnet()
     {
         if (mgPos != null && magnetCurrDir >= 0 && magnetCurrDir < mgPos.Length)
@@ -167,7 +164,7 @@ public class Magnet : MonoBehaviour
     {
         if (player != null)
         {
-            // Radio m·ximo del im·n
+            // Radio m√°ximo del im√°n
             Gizmos.color = Color.yellow;
             Gizmos.DrawWireSphere(player.position, maxDistance);
 

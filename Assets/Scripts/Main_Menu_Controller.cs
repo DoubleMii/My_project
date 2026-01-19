@@ -10,10 +10,8 @@ public class Main_Menu_Controller : MonoBehaviour
 
     }
 
-    public void ExitGame()
+    public void QuitGame()
     {
-        Debug.Log("Ha salido del juego");
         Application.Quit();
-
     }
 }

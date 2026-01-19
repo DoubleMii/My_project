@@ -128,9 +128,24 @@ public class PlayerMovement : MonoBehaviour
     //  GROUND & OBJECT CHECKS 
     public bool IsGrounded()
     {
-        bool grounded = Physics2D.OverlapBox(groundCheckPos.position, groundCheckSize, 0, groundLayer);
-        if (grounded) isJumping = false;
-        return grounded;
+        // Check for ground or magnetic objects
+        Collider2D[] colliders = Physics2D.OverlapBoxAll(groundCheckPos.position, groundCheckSize, 0);
+        foreach (Collider2D col in colliders)
+        {
+            if (col.gameObject == gameObject) continue;
+            
+            // Allow jumping on anything in Ground Layer
+            if (((1 << col.gameObject.layer) & groundLayer) != 0) return true;
+            
+            // Allow jumping on anything in Object Layer
+            if (((1 << col.gameObject.layer) & objectLayer) != 0) return true;
+            
+            // Allow jumping explicitly on MagneticObjects
+            if (col.GetComponent<MagneticObjects>() != null) return true;
+        }
+        
+        isJumping = false;
+        return false;
     }
 
     public bool IsObject()
@@ -175,7 +190,6 @@ public class PlayerMovement : MonoBehaviour
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        Debug.Log($"COLLISION FISICA con: {collision.gameObject.name} | Tag: {collision.gameObject.tag}");
         
         // Manejar colisiones físicas con enemigos
         if (collision.gameObject.CompareTag("Enemy"))
@@ -221,7 +235,20 @@ public class PlayerMovement : MonoBehaviour
         float enemyTop = collision.transform.position.y + collision.bounds.extents.y;
 
         // Si el jugador está cayendo y viene desde arriba
-        bool isComingFromAbove = playerBottom > enemyTop && playerRigidbody2d.linearVelocity.y * gravityDirection < 0;
+        // Determine if player is "above" (relative to gravity) the enemy
+        bool isComingFromAbove = false;
+        if (gravityDirection > 0)
+        {
+             // Normal gravity: Player is physically above and falling down
+             isComingFromAbove = playerBottom > enemyTop && playerRigidbody2d.linearVelocity.y < 0;
+        }
+        else
+        {
+             // Inverted gravity: Player is physically below and "falling" up
+             float playerTop = transform.position.y + GetComponent<Collider2D>().bounds.extents.y;
+             float enemyBottom = collision.transform.position.y - collision.bounds.extents.y;
+             isComingFromAbove = playerTop < enemyBottom && playerRigidbody2d.linearVelocity.y > 0;
+        }
 
         if (isComingFromAbove)
         {
@@ -259,10 +286,6 @@ public class PlayerMovement : MonoBehaviour
 
     private void MorirJugador()
     {
-        Debug.Log("Player ha muerto! Reiniciando nivel...");
-        //Reproducir animación o sonido de muerte antes de reiniciar
-        // AudioManager.instance.PlayerSound(deathSound);
-        // Reiniciar el nivel actual
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 

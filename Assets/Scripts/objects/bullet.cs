@@ -17,7 +17,6 @@ public class Bullet : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         magneticScript = GetComponent<MagneticObjects>();
         
-        // DESACTIVAR MagneticObjects al inicio para que no interfiera
         if (magneticScript != null)
         {
             magneticScript.enabled = false;
@@ -82,11 +81,31 @@ public class Bullet : MonoBehaviour
         if (collision.CompareTag("Magnet")) return;
 
         // Si la bala ha sido repelida y choca con un enemigo
-        if (hasBeenRepelled && collision.CompareTag("Enemy"))
+        if (hasBeenRepelled)
         {
-            Destroy(collision.gameObject);
-            DestruirBala();
-            return;
+            if (collision.CompareTag("Enemy"))
+            {
+                Destroy(collision.gameObject);
+                DestruirBala();
+                return;
+            }
+            // Check for Boss
+            BossHealthAndStun bossHealth = collision.GetComponent<BossHealthAndStun>();
+            if (bossHealth != null)
+            {
+                int damage = Mathf.CeilToInt(bossHealth.maxHealth * 0.201f); 
+                bossHealth.TakeDamage(damage);
+                DestruirBala();
+                return;
+            }
+            // Check for Canon
+            Canon canon = collision.GetComponent<Canon>();
+            if (canon != null)
+            {
+                Destroy(collision.gameObject);
+                DestruirBala();
+                return;
+            }
         }
 
         // Si choca con el player

@@ -22,6 +22,7 @@ public class BossHealthAndStun : MonoBehaviour
 
     // Evento para que la UI (barra de vida) pueda escuchar los cambios
     public System.Action<int, int> OnHealthChanged;
+    private Coroutine currentStunCoroutine;
 
     private void Awake()
     {
@@ -30,10 +31,6 @@ public class BossHealthAndStun : MonoBehaviour
         if (bossCanon == null)
         {
             bossCanon = GetComponent<BossCanon>();
-            if (bossCanon == null)
-            {
-                Debug.LogError("No se encontró BossCanon en el mismo objeto");
-            }
         }
     }
 
@@ -45,15 +42,12 @@ public class BossHealthAndStun : MonoBehaviour
 
     public void TakeDamage(int amount)
     {
-        if (currentHealth <= 0 || IsStunned) return;
+        if (currentHealth <= 0) return;
 
         currentHealth -= amount;
         currentHealth = Mathf.Max(0, currentHealth);
 
-        // ¡IMPORTANTE! Notificamos el cambio de vida a la barra/UI
         OnHealthChanged?.Invoke(currentHealth, maxHealth);
-
-        CheckForPhaseStun();
 
         if (currentHealth <= 0)
         {
@@ -88,25 +82,25 @@ public class BossHealthAndStun : MonoBehaviour
             currentStunDuration *= stunMultipliers[thresholdsHit - 1];
         }
 
-        Debug.Log($"Fase stun #{thresholdsHit} activada - Vida ≈ {nextThreshold + healthThresholdPercent}% → {currentStunDuration}s");
+        // Check for stun logic
 
         Stun(currentStunDuration);
     }
 
     public void Stun(float duration)
     {
-        if (IsStunned) return;
-
         IsStunned = true;
 
         if (bossCanon != null)
         {
             bossCanon.ForceStopShooting();
-            bossCanon.StopAllCoroutines(); // Detiene el ciclo de teleports
         }
 
-        // Feedback visual básico (puedes mejorar con animaciones/partículas)
-        StartCoroutine(StunRoutine(duration));
+        if (currentStunCoroutine != null)
+        {
+            StopCoroutine(currentStunCoroutine);
+        }
+        currentStunCoroutine = StartCoroutine(StunRoutine(duration));
     }
 
     private IEnumerator StunRoutine(float duration)
@@ -126,6 +120,7 @@ public class BossHealthAndStun : MonoBehaviour
             sr.color = originalColor;
         }
 
+        currentStunCoroutine = null;
         RecoverFromStun();
     }
 
@@ -144,7 +139,7 @@ public class BossHealthAndStun : MonoBehaviour
 
     private void Die()
     {
-        IsStunned = true;
+        IsStunned = true; // Mark as "dead/inactive"
 
         if (bossCanon != null)
         {
@@ -152,10 +147,6 @@ public class BossHealthAndStun : MonoBehaviour
             bossCanon.ForceStopShooting();
         }
 
-        Debug.Log("¡BOSS DERROTADO!");
-
-        // Aquí puedes poner animación de muerte, partículas, sonido, etc.
-        // Ejemplo simple:
         Destroy(gameObject, 2.5f);
     }
 
