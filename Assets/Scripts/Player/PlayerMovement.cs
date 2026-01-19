@@ -95,6 +95,7 @@ public class PlayerMovement : MonoBehaviour
             Vector3 scale = graphicsChild.localScale;
             scale.x *= -1f;
             graphicsChild.localScale = scale;
+            walkParticles.gameObject.transform.localScale = scale;
         }
     }
 
@@ -124,7 +125,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    // ========== GROUND & OBJECT CHECKS ==========
+    //  GROUND & OBJECT CHECKS 
     public bool IsGrounded()
     {
         bool grounded = Physics2D.OverlapBox(groundCheckPos.position, groundCheckSize, 0, groundLayer);
@@ -143,7 +144,7 @@ public class PlayerMovement : MonoBehaviour
         col?.GetComponent<MagneticObjects>()?.NoTarget();
     }
 
-    // ========== GRAVITY INVERSION ==========
+    //  GRAVITY INVERSION 
     public void ToggleGravity()
     {
         isGravityInverted = !isGravityInverted;
@@ -271,5 +272,11 @@ public class PlayerMovement : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawWireCube(groundCheckPos.position, groundCheckSize);
         Gizmos.DrawWireCube(objectCheckPos.position, objectCheckSize);
+    }
+
+    public void DrawParticlesWalk ()
+    {
+        walkParticles.Stop();
+        walkParticles.Play();
     }
 }

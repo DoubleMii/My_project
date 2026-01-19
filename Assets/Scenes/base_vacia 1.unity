@@ -221,11 +221,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &153984204 stripped
-BoxCollider2D:
-  m_CorrespondingSourceObject: {fileID: 4219183161408611398, guid: a1e4b5d0c6e06014199ee9a1be14ff3b, type: 3}
-  m_PrefabInstance: {fileID: 715220062}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &198922276
 GameObject:
   m_ObjectHideFlags: 0
@@ -44405,22 +44400,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Violet
       objectReference: {fileID: 0}
-    - target: {fileID: 8944058255861026612, guid: a1e4b5d0c6e06014199ee9a1be14ff3b, type: 3}
-      propertyPath: magneticUp
-      value: 
-      objectReference: {fileID: 1080625754}
-    - target: {fileID: 8944058255861026612, guid: a1e4b5d0c6e06014199ee9a1be14ff3b, type: 3}
-      propertyPath: magneticDown
-      value: 
-      objectReference: {fileID: 954663693}
-    - target: {fileID: 8944058255861026612, guid: a1e4b5d0c6e06014199ee9a1be14ff3b, type: 3}
-      propertyPath: magneticLeft
-      value: 
-      objectReference: {fileID: 1059818349}
-    - target: {fileID: 8944058255861026612, guid: a1e4b5d0c6e06014199ee9a1be14ff3b, type: 3}
-      propertyPath: magneticRight
-      value: 
-      objectReference: {fileID: 153984204}
+    - target: {fileID: 5156237029570942906, guid: a1e4b5d0c6e06014199ee9a1be14ff3b, type: 3}
+      propertyPath: moveWithTransform
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5156237029570942906, guid: a1e4b5d0c6e06014199ee9a1be14ff3b, type: 3}
+      propertyPath: ShapeModule.radiusThickness
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5335281717230687257, guid: a1e4b5d0c6e06014199ee9a1be14ff3b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.545
+      objectReference: {fileID: 0}
+    - target: {fileID: 5335281717230687257, guid: a1e4b5d0c6e06014199ee9a1be14ff3b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.33
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -44993,21 +44988,6 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
---- !u!61 &954663693 stripped
-BoxCollider2D:
-  m_CorrespondingSourceObject: {fileID: 2458942353226447142, guid: a1e4b5d0c6e06014199ee9a1be14ff3b, type: 3}
-  m_PrefabInstance: {fileID: 715220062}
-  m_PrefabAsset: {fileID: 0}
---- !u!61 &1059818349 stripped
-BoxCollider2D:
-  m_CorrespondingSourceObject: {fileID: 1259724840391630139, guid: a1e4b5d0c6e06014199ee9a1be14ff3b, type: 3}
-  m_PrefabInstance: {fileID: 715220062}
-  m_PrefabAsset: {fileID: 0}
---- !u!61 &1080625754 stripped
-BoxCollider2D:
-  m_CorrespondingSourceObject: {fileID: 159354339454149882, guid: a1e4b5d0c6e06014199ee9a1be14ff3b, type: 3}
-  m_PrefabInstance: {fileID: 715220062}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1145048873
 PrefabInstance:
   m_ObjectHideFlags: 0

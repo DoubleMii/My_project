@@ -18,7 +18,7 @@ public class Canon : MonoBehaviour
         int Rand = Random.Range(0, balaPrefabs.Count);
 
         // Instanciar la bala
-        GameObject balaInstanciada = Instantiate(balaPrefabs[Rand], puntoDisparo.position, shotLeft ? Quaternion.Euler(0, 0, 90) : Quaternion.Euler(0, 0, -90));
+        GameObject balaInstanciada = Instantiate(balaPrefabs[Rand], puntoDisparo.position, shotLeft ? Quaternion.Euler(0, 0, 0) : Quaternion.Euler(0, 0, 0));
 
         // Configurar la dirección ANTES de que empiece a moverse
         Bullet bulletScript = balaInstanciada.GetComponent<Bullet>();
