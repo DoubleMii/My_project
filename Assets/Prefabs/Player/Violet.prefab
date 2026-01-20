@@ -412,9 +412,13 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5468770208464407405, guid: 93a1e2c0d9dba2241ab4e63659abef8c, type: 3}
+      propertyPath: MinDistance
+      value: 0.21978664
+      objectReference: {fileID: 0}
     - target: {fileID: 5697827817128477724, guid: 93a1e2c0d9dba2241ab4e63659abef8c, type: 3}
       propertyPath: jumpForce
-      value: 12
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 5697827817128477724, guid: 93a1e2c0d9dba2241ab4e63659abef8c, type: 3}
       propertyPath: magneticUp
@@ -449,12 +453,20 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 4219183161408611398}
     - target: {fileID: 5697827817128477724, guid: 93a1e2c0d9dba2241ab4e63659abef8c, type: 3}
+      propertyPath: fallMultiplier
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5697827817128477724, guid: 93a1e2c0d9dba2241ab4e63659abef8c, type: 3}
       propertyPath: groundCheckSize.x
-      value: 2.86
+      value: 1.54
       objectReference: {fileID: 0}
     - target: {fileID: 5697827817128477724, guid: 93a1e2c0d9dba2241ab4e63659abef8c, type: 3}
       propertyPath: groundCheckSize.y
       value: 0.69
+      objectReference: {fileID: 0}
+    - target: {fileID: 5697827817128477724, guid: 93a1e2c0d9dba2241ab4e63659abef8c, type: 3}
+      propertyPath: jumpCutMultiplier
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5697827817128477724, guid: 93a1e2c0d9dba2241ab4e63659abef8c, type: 3}
       propertyPath: objectCheckSize.x
