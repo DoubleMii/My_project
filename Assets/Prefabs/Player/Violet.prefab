@@ -374,11 +374,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3235159572274291059, guid: 93a1e2c0d9dba2241ab4e63659abef8c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -3.55
+      value: -6.6
       objectReference: {fileID: 0}
     - target: {fileID: 3235159572274291059, guid: 93a1e2c0d9dba2241ab4e63659abef8c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 8.54
+      value: -9.2
       objectReference: {fileID: 0}
     - target: {fileID: 3235159572274291059, guid: 93a1e2c0d9dba2241ab4e63659abef8c, type: 3}
       propertyPath: m_LocalPosition.z
@@ -414,7 +414,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5697827817128477724, guid: 93a1e2c0d9dba2241ab4e63659abef8c, type: 3}
       propertyPath: jumpForce
-      value: 14
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 5697827817128477724, guid: 93a1e2c0d9dba2241ab4e63659abef8c, type: 3}
       propertyPath: magneticUp
@@ -422,7 +422,7 @@ PrefabInstance:
       objectReference: {fileID: 159354339454149882}
     - target: {fileID: 5697827817128477724, guid: 93a1e2c0d9dba2241ab4e63659abef8c, type: 3}
       propertyPath: playerSpeed
-      value: 8
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 5697827817128477724, guid: 93a1e2c0d9dba2241ab4e63659abef8c, type: 3}
       propertyPath: acceleration
