@@ -62,7 +62,7 @@ MonoBehaviour:
     m_path: Assets/Scenes/Levels 4-1.unity
   - m_enabled: 1
     m_path: Assets/Scenes/Levels 4-2.unity
-  - m_enabled: 1
+  - m_enabled: 0
     m_path: Assets/Scenes/base_vacia 1.unity
   m_ScriptingDefines: []
   m_PlayerSettingsYaml:
